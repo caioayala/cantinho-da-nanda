@@ -890,7 +890,8 @@ function trancos(n, duracao){
 // anima uma barra pelos trancos, trocando o texto junto. devolve uma Promise que resolve no fim.
 function enche(barra, { n, duracao, textos = [], rotulo = null, tique = false }){
   return new Promise((resolve) => {
-    const passos = reduz ? [[100, 0]] : trancos(n, duracao);
+    // roda mesmo com "reduzir animações": barra de progresso enchendo não é o tipo de movimento que incomoda
+    const passos = trancos(n, duracao);
     let i = 0;
     const proximo = () => {
       if (i >= passos.length) return resolve();
@@ -911,7 +912,6 @@ enche($('bootBarra'), {
 }).then(() => {
   $('bootStatus').textContent = 'pronto.';
   $('ligar').disabled = false;
-  $('ligar').focus({ preventScroll:true });
 });
 $('ligar').addEventListener('click', () => {
   Som.iniciar();
@@ -1006,7 +1006,7 @@ let carregandoAgora = null;
 function abrir(id, opcoes = {}){
   const app = APPS.find((a) => a.id === id);
   const janela = $('app-' + id);
-  if (!app || jaCarregou.has(id) || reduz || (janela && !janela.hidden)) return abrirJanela(id, opcoes);
+  if (!app || jaCarregou.has(id) || (janela && !janela.hidden)) return abrirJanela(id, opcoes);
   if (carregandoAgora) return;            // já tem um carregando: ignora cliques repetidos
   carregandoAgora = id;
   Som.iniciar();
