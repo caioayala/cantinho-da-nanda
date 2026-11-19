@@ -4,375 +4,1429 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>um cantinho só seu</title>
+<meta name="description" content="um computadorzinho fofo feito pra Nanda.">
+<meta name="theme-color" content="#bdf0e6">
+<link rel="icon" href="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Cat%20face/3D/cat_face_3d.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen&family=Nunito:ital,wght@0,400;0,600;0,800;1,600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&family=Caveat:wght@500;700&display=swap');
-
+/* ============================================================
+   TOKENS
+   ============================================================ */
 :root{
-  --cream:#F7F2E9;
-  --paper:#FBF8F2;
-  --ink:#2E2822;
-  --sage:#8A9A7E;
-  --sage-dark:#63735A;
-  --plum:#8B5A6B;
-  --gold:#C9A15A;
-  --shadow: 0 8px 24px rgba(46,40,34,0.10);
+  --mint:#bdf0e6;
+  --rose:#f8d3e3;
+  --butter:#fcefc8;
+  --paper:#fffaf6;
+  --ink:#4a2338;
+  --muted:#7d5468;
+  --line:#b84a74;
+  --line-soft:#f1a7c4;
+  --bar-green:#d3f6ad;
+  --bar-pink:#fbc0d7;
+  --bar-blue:#bcdcfb;
+  --bar-yellow:#fbe7a6;
+  --bar-mint:#b4ede2;
+  --dot-y:#f7d774;
+  --dot-g:#9be07a;
+  --dot-p:#f59ab8;
+  --radius:14px;
+  --taskbar:54px;
+  --pixel:'Silkscreen', ui-monospace, monospace;
+  --body:'Nunito', system-ui, sans-serif;
+  --hand:'Caveat', cursive;
 }
 
 *{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
+html,body{margin:0;}
 body{
-  margin:0;
-  background:var(--cream);
+  min-height:100dvh;
+  background:var(--rose);
   color:var(--ink);
-  font-family:'Nunito', sans-serif;
-  line-height:1.55;
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.6;
   overflow-x:hidden;
 }
-
-.wrap{max-width:760px; margin:0 auto; padding:0 20px; visibility:hidden;}
-.wrap.show{visibility:visible;}
-
-/* ---------- GATE ---------- */
-#gate{
-  position:fixed; inset:0; z-index:50;
-  background:var(--cream);
-  display:flex; align-items:center; justify-content:center;
-  flex-direction:column; text-align:center; padding:30px;
-  cursor:pointer;
+body::before{
+  content:""; position:fixed; inset:0; z-index:-1;
+  background:
+    linear-gradient(rgba(255,255,255,.6) 1.5px, transparent 1.5px) 0 0/34px 34px,
+    linear-gradient(90deg, rgba(255,255,255,.6) 1.5px, transparent 1.5px) 0 0/34px 34px,
+    linear-gradient(180deg, var(--mint) 0%, var(--rose) 50%, var(--butter) 100%);
 }
-#gate .gate-cat{font-size:3.2rem; margin-bottom:6px;}
-#gate h1{font-size:1.6rem; margin:0 0 8px; font-weight:800;}
-#gate p{color:#6b6156; max-width:280px; margin:0;}
-#gate.hide{display:none;}
+img{max-width:100%; display:block;}
+h1,h2{font-family:var(--pixel); font-weight:400; line-height:1.15; margin:0; color:var(--line);}
+p{margin:0;}
+button{font:inherit; color:inherit;}
+:focus-visible{outline:3px dashed var(--line); outline-offset:3px;}
+[hidden]{display:none !important;}
 
-/* ---------- HERO ---------- */
-.hero{padding:44px 20px 10px; text-align:center;}
-.hero h1{font-size:clamp(2rem, 7vw, 2.7rem); font-weight:800; margin:0 0 12px;}
-.hero p{max-width:480px; margin:0 auto; color:#5b5148; font-size:1.05rem;}
-
-.player-box{
-  max-width:420px; margin:24px auto 0;
-  border-radius:16px; overflow:hidden; box-shadow:var(--shadow);
+/* ============================================================
+   BOTÕES
+   ============================================================ */
+.btn{
+  font-family:var(--pixel); font-size:15px; color:var(--ink);
+  background:var(--bar-blue); border:3px solid var(--line); border-radius:8px;
+  min-height:46px; padding:8px 18px; cursor:pointer;
+  box-shadow:3px 3px 0 var(--line);
+  transition:transform .12s ease, box-shadow .12s ease;
 }
-.player-caption{font-size:0.85rem; color:#8a8175; margin-top:8px;}
+.btn:hover{transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--line);}
+.btn:active{transform:translate(2px,2px); box-shadow:1px 1px 0 var(--line);}
+.btn.rosa{background:var(--bar-pink);}
+.btn.verde{background:var(--bar-green);}
+.btn.amarelo{background:var(--bar-yellow);}
+.btn[disabled]{opacity:.5; cursor:default; transform:none; box-shadow:3px 3px 0 var(--line);}
 
-/* ---------- TEA IMAGE SCENE ---------- */
-.tea-scene {
-  margin: 10px auto;
-  text-align: center;
-  position: relative;
-  display: inline-block;
+/* ============================================================
+   JANELA (base)
+   ============================================================ */
+.win{
+  background:var(--paper);
+  border:3px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:7px 7px 0 var(--line-soft);
+  min-width:0;
 }
-.tea-img {
-  width: 140px;
-  height: 140px;
-  object-fit: contain;
-  background: white;
-  padding: 24px;
-  border-radius: 50%;
-  border: 6px solid var(--paper);
-  box-shadow: var(--shadow);
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.win-bar{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:7px 8px 7px 14px; min-height:46px;
+  background:var(--bar, var(--bar-pink));
+  border-bottom:3px solid var(--line);
+  border-radius:calc(var(--radius) - 3px) calc(var(--radius) - 3px) 0 0;
+  font-family:var(--pixel); font-size:15px; color:var(--line);
+  letter-spacing:.03em;
+  user-select:none;
 }
-.tea-img:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(46,40,34,0.15);
+.win-bar .titulo{display:flex; align-items:center; gap:8px; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.win-bar .titulo img{width:22px; height:22px; flex-shrink:0;}
+.dots{display:flex; gap:8px; flex-shrink:0; padding-right:6px;}
+.dots i{width:15px; height:15px; border-radius:50%; border:2.5px solid var(--line); background:var(--dot-y);}
+.dots i:nth-child(2){background:var(--dot-g);}
+.dots i:nth-child(3){background:var(--dot-p);}
+
+/* os 3 botões da janela principal: bolinha de 18px dentro de uma área de toque de 30px */
+.controles{display:flex; gap:2px; flex-shrink:0;}
+.ctl{width:30px; height:30px; padding:0; border:0; background:none; cursor:pointer; display:grid; place-items:center;}
+.ctl::before{
+  width:18px; height:18px; border-radius:50%; border:2.5px solid var(--line); box-sizing:border-box;
+  display:grid; place-items:center;
+  font-family:var(--pixel); font-size:10px; line-height:1; color:var(--line);
+  transition:transform .15s cubic-bezier(.3,1.6,.5,1);
 }
-.tea-img:active {
-  transform: scale(0.95);
+.ctl.min::before{content:"-"; background:var(--dot-y);}
+.ctl.zoom::before{content:"+"; background:var(--dot-g);}
+.ctl.zoom[aria-pressed="true"]::before{content:"-";}
+.ctl.x::before{content:"x"; background:var(--dot-p);}
+.ctl:hover::before{transform:scale(1.2);}
+.ctl:active::before{transform:scale(.85);}
+.fechar{
+  flex-shrink:0; width:38px; height:32px; cursor:pointer;
+  font-family:var(--pixel); font-size:15px; color:var(--line); line-height:1;
+  background:var(--dot-p); border:2.5px solid var(--line); border-radius:7px;
+  transition:transform .12s ease, background .15s ease;
+}
+.fechar:hover{background:#f77fa8; transform:scale(1.06);}
+.fechar:active{transform:scale(.94);}
+.win-body{padding:clamp(16px, 3vw, 26px);}
+
+.bar-green{--bar:var(--bar-green);}
+.bar-pink{--bar:var(--bar-pink);}
+.bar-blue{--bar:var(--bar-blue);}
+.bar-yellow{--bar:var(--bar-yellow);}
+.bar-mint{--bar:var(--bar-mint);}
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+#boot{
+  position:fixed; inset:0; z-index:1000;
+  display:grid; place-items:center; padding:20px;
+  background:
+    linear-gradient(rgba(255,255,255,.6) 1.5px, transparent 1.5px) 0 0/34px 34px,
+    linear-gradient(90deg, rgba(255,255,255,.6) 1.5px, transparent 1.5px) 0 0/34px 34px,
+    var(--mint);
+}
+#boot .win{width:min(400px, 100%); text-align:center;}
+#boot .win-body{display:grid; justify-items:center; gap:16px;}
+#boot .gato{width:116px; height:116px; animation:boia 3s ease-in-out infinite;}
+#boot h1{font-size:30px;}
+.loading{width:100%; height:22px; border:3px solid var(--line); border-radius:6px; background:#fff; overflow:hidden; padding:2px;}
+.loading span{
+  display:block; height:100%; width:0;
+  background:repeating-linear-gradient(90deg, var(--bar-blue) 0 12px, transparent 12px 15px);
+  animation:carrega 1.6s steps(16) forwards;
+}
+#boot .status{font-family:var(--pixel); font-size:13px; color:var(--muted); min-height:1.4em;}
+#boot.saindo{animation:bootSai .7s ease forwards;}
+#boot.saindo .win{animation:bootJanela .5s cubic-bezier(.5,0,.75,0) forwards;}
+@keyframes carrega{to{width:100%;}}
+@keyframes boia{50%{transform:translateY(-8px);}}
+@keyframes bootJanela{to{transform:scale(.6); opacity:0;}}
+@keyframes bootSai{0%{opacity:1;} 45%{opacity:1; background-color:#fff;} 100%{opacity:0; visibility:hidden;}}
+
+/* ============================================================
+   DESKTOP
+   ============================================================ */
+.desktop{
+  min-height:100dvh;
+  padding:16px 16px calc(var(--taskbar) + 24px);
+  display:grid; gap:24px; align-content:start;
+}
+.principal{width:100%; max-width:720px; justify-self:center;}
+.principal .win-body{display:grid; gap:22px; align-items:center;}
+.principal h1{font-size:clamp(32px, 6vw, 56px);}
+.spotify{border-radius:12px; overflow:hidden; border:3px solid var(--line); background:#282828;}
+.spotify iframe{display:block; border:0;}
+.gatos-hero{position:relative; width:100%; max-width:200px; aspect-ratio:1.15; justify-self:center;}
+/* celular: janela principal compacta pra sobrar espaço pros ícones */
+@media (max-width:899px){
+  .principal .win-body{grid-template-columns:minmax(0,1fr) 96px; gap:16px 12px;}
+  .principal .win-body > div:first-child{display:contents;}
+  .principal h1{grid-column:1; font-size:clamp(28px, 9vw, 40px);}
+  .gatos-hero{grid-column:2; grid-row:1; max-width:96px;}
+  .spotify{grid-column:1 / -1;}
+  .spotify iframe{height:80px;}
+}
+.gatos-hero img{position:absolute;}
+.gatos-hero .g1{width:76%; left:0; top:0; animation:boia 4s ease-in-out infinite;}
+.gatos-hero .g2{width:46%; right:0; bottom:0; animation:boia 4s ease-in-out -1.6s infinite;}
+
+/* ícones do desktop */
+.icones{list-style:none; margin:0; padding:0; display:grid; gap:6px; grid-template-columns:repeat(3, minmax(0,1fr)); align-content:start;}
+@media (min-width:520px) and (max-width:899px){ .icones{grid-template-columns:repeat(4, minmax(0,1fr));} }
+.icone{
+  width:100%; display:grid; justify-items:center; gap:6px;
+  padding:10px 2px 8px; border:2px solid transparent; border-radius:12px; cursor:pointer;
+  background:none; font-family:var(--pixel); font-size:12px; color:var(--line); line-height:1.2;
+  text-shadow:0 1px 0 rgba(255,255,255,.9);
+  transition:background .15s ease, border-color .15s ease;
+}
+.icone img{width:54px; height:54px; transition:transform .2s cubic-bezier(.3,1.6,.5,1); filter:drop-shadow(0 3px 2px rgba(74,35,56,.18));}
+.icone:hover{background:rgba(255,255,255,.55); border-color:rgba(184,74,116,.35);}
+.icone:hover img{transform:translateY(-3px) scale(1.06);}
+.icone:active img{transform:scale(.92);}
+.icone.aberto{background:rgba(188,220,251,.55); border-color:var(--line-soft);}
+
+@media (min-width:900px){
+  .desktop{
+    grid-template-columns:112px minmax(0,1fr);
+    align-items:center; align-content:stretch;
+    padding:24px 32px calc(var(--taskbar) + 24px);
+  }
+  .icones{grid-template-columns:1fr; gap:4px; align-self:start;}
+  .principal{grid-column:2; grid-row:1;}
+  .principal .win-body{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); padding:34px;}
+  .gatos-hero{max-width:260px;}
 }
 
-.breathing {
-  animation: breatheAnim 8s ease-in-out forwards;
-  pointer-events: none;
+/* ============================================================
+   JANELAS DE APP (abrem por cima do desktop)
+   ============================================================ */
+.app{
+  position:fixed; z-index:50;
+  display:flex; flex-direction:column;
+  left:8px; right:8px; top:8px; bottom:calc(var(--taskbar) + 8px);
+  box-shadow:7px 7px 0 var(--line-soft), 0 18px 40px rgba(74,35,56,.18);
 }
-@keyframes breatheAnim {
-  0%   { transform: scale(1); }
-  50%  { transform: scale(1.2); box-shadow: 0 20px 40px rgba(138, 154, 126, 0.4); }
-  100% { transform: scale(1); }
+.app .win-body{flex:1; overflow:auto; overscroll-behavior:contain;}
+.app.mini{top:auto; bottom:auto; top:50%; translate:0 -50%; max-height:calc(100dvh - var(--taskbar) - 24px);}
+/* barra de título = alça de arrastar. touch-action:none impede o celular de rolar a página quando o dedo começa aqui */
+.app .win-bar, .principal .win-bar{cursor:grab; touch-action:none;}
+.arrastando .win-bar{cursor:grabbing;}
+.arrastando{transition:none !important;}
+.principal{position:relative; z-index:5;}
+.principal.arrastando{box-shadow:10px 12px 0 var(--line-soft);}
+/* zoom: a janela principal sai do fluxo e ocupa a tela, por baixo das janelas de app */
+.principal.maximizada{
+  position:fixed; z-index:45; left:8px; right:8px; top:8px; bottom:calc(var(--taskbar) + 8px);
+  max-width:none; width:auto; display:flex; flex-direction:column;
+  /* a janela é filha da grade do desktop: sem isso o justify-self:center encolhe ela pro tamanho do conteúdo */
+  justify-self:stretch; align-self:stretch;
+}
+.principal.maximizada .win-bar{cursor:default;}
+.principal.maximizada .win-body{flex:1; overflow:auto; align-content:center;}
+.app.canto{top:auto; bottom:calc(var(--taskbar) + 12px); translate:none;}
+.app.focada{box-shadow:7px 7px 0 var(--line), 0 22px 50px rgba(74,35,56,.25);}
+@media (min-width:900px){
+  .app{right:auto; bottom:auto; width:var(--w, 560px); max-width:calc(100vw - 40px); max-height:calc(100dvh - var(--taskbar) - 32px);}
+  .app.mini{translate:none;}
 }
 
-.hint{font-size:0.85rem; color:#8a8175; margin-top:16px; font-style:italic; transition: all 0.3s ease;}
+/* ============================================================
+   VITROLA
+   ============================================================ */
+.vitrola-topo{display:grid; gap:22px;}
+@media (min-width:900px){ .vitrola-topo{grid-template-columns:minmax(0,7fr) minmax(0,5fr); align-items:start;} }
+.deck{position:relative; aspect-ratio:4/3; overflow:hidden; border:3px solid var(--line); border-radius:12px; background:#ece6dd;}
+.deck > img{width:100%; height:100%; object-fit:cover;}
+.deck{--cx:42.8%; --cy:46.8%; --rw:55.5%;}
+.disco{
+  position:absolute; left:var(--cx); top:var(--cy); width:var(--rw); aspect-ratio:1;
+  translate:-50% -50%;
+  /* a foto foi tirada meio de frente, então o prato aparece achatado: o disco acompanha */
+  scale:1 .72;
+  transform:translate(85%, -75%) rotate(-40deg) scale(.8);
+  opacity:0;
+  transition:transform .95s cubic-bezier(.2,.8,.25,1), opacity .35s ease;
+  filter:drop-shadow(0 8px 10px rgba(0,0,0,.45));
+  pointer-events:none;
+}
+.disco.on{transform:none; opacity:1;}
+.vinil{
+  position:absolute; inset:0; border-radius:50%;
+  background:
+    radial-gradient(circle, transparent 0 18.5%, #0b0b0b 18.8% 20%, transparent 20.3%),
+    radial-gradient(circle, transparent 0 46%, rgba(0,0,0,.6) 46.3% 47%, transparent 47.3%),
+    repeating-radial-gradient(circle, #141414 0 1px, #1f1f1f 1.4px 2.4px, #141414 2.8px);
+  box-shadow:inset 0 0 0 4px #090909;
+}
+.vinil img{position:absolute; width:37%; aspect-ratio:1; left:31.5%; top:31.5%; border-radius:50%; object-fit:cover;}
+.vinil::after{content:""; position:absolute; width:3.2%; aspect-ratio:1; left:48.4%; top:48.4%; border-radius:50%; background:#d9d4cc; box-shadow:0 0 0 1px #777;}
+.vinil.gira{animation:gira 1.8s linear infinite;}
+.brilho{
+  position:absolute; inset:0; border-radius:50%; pointer-events:none;
+  background:conic-gradient(from 25deg, transparent 0 6%, rgba(255,255,255,.16) 11%, transparent 17% 52%, rgba(255,255,255,.11) 61%, transparent 67%);
+}
+@keyframes gira{to{transform:rotate(360deg);}}
 
-/* ---------- DECORATIONS ---------- */
-.paw-trail{text-align:center; font-size:1.1rem; letter-spacing:14px; opacity:0.5; margin:6px 0 -6px; user-select:none;}
-.corner-cat{position:absolute; width:28px; height:22px; opacity:0.55;}
-.corner-cat .ce{position:absolute; width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-bottom:9px solid var(--plum);}
-.corner-cat .ce.l{left:0; top:0; transform:rotate(-15deg);}
-.corner-cat .ce.r{left:12px; top:0; transform:rotate(15deg);}
-.corner-cat .cf{position:absolute; top:6px; left:2px; width:20px; height:16px; background:var(--plum); border-radius:50%;}
-.corner-cat.tr{top:-10px; right:16px;}
-.corner-cat.tl{top:-10px; left:16px;}
+.tocando{display:grid; gap:12px;}
+.tocando .rotulo{font-family:var(--pixel); font-size:13px; color:var(--muted);}
+.tocando .faixa{font-family:var(--pixel); font-size:clamp(20px, 2.4vw, 26px); color:var(--line); line-height:1.2;}
+.tocando .album{color:var(--muted); margin-top:-6px;}
+.player{position:relative; aspect-ratio:16/9; border:3px solid var(--line); border-radius:10px; overflow:hidden; background:#1d1d1d;}
+.player iframe, .player #yt{position:absolute; inset:0; width:100%; height:100%;}
+.player .vazio{
+  position:absolute; inset:0; z-index:2; display:grid; place-items:center; text-align:center; padding:16px;
+  background:var(--butter); font-family:var(--pixel); font-size:13px; color:var(--muted);
+}
+.player.ativo .vazio{display:none;}
 
-/* ---------- SECTIONS ---------- */
-section{margin:26px auto; padding:30px 24px; background:var(--paper); border-radius:20px; box-shadow:var(--shadow); position:relative;}
-section h2{font-size:1.3rem; font-weight:800; margin:0 0 10px; color:var(--plum);}
-section p.lead{color:#5b5148; margin-bottom:18px;}
+.capas{
+  list-style:none; margin:24px 0 0; padding:22px 4px 12px; border-top:3px dashed var(--line-soft);
+  display:grid; gap:16px; grid-auto-flow:column; grid-auto-columns:minmax(132px, 40%);
+  overflow-x:auto; scroll-snap-type:x mandatory;
+}
+@media (min-width:700px){ .capas{grid-auto-flow:row; grid-template-columns:repeat(5, minmax(0,1fr)); overflow:visible;} }
+.capas li{scroll-snap-align:start;}
+.capa{
+  width:100%; padding:0; text-align:left; cursor:pointer;
+  background:#fff; border:3px solid var(--line); border-radius:10px; overflow:hidden;
+  box-shadow:3px 3px 0 var(--line-soft);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.capa:hover{transform:translateY(-3px); box-shadow:4px 6px 0 var(--line-soft);}
+.capa img{width:100%; aspect-ratio:1; object-fit:cover; border-bottom:3px solid var(--line);}
+.capa span{display:block; padding:8px 10px 10px;}
+.capa b{display:block; font-family:var(--pixel); font-weight:400; font-size:12px; color:var(--line); line-height:1.25;}
+.capa small{display:block; font-size:13px; color:var(--muted); line-height:1.3; margin-top:2px;}
+.capa[aria-pressed="true"]{transform:translateY(-8px); box-shadow:4px 8px 0 var(--line); background:var(--bar-yellow);}
 
-.action-btn{border:none; background:var(--sage); color:white; font-family:'Nunito',sans-serif; font-weight:700; padding:12px 22px; border-radius:30px; cursor:pointer; font-size:0.95rem; transition:transform .15s ease, background .2s ease; width: 100%; max-width: 250px;}
-.action-btn:hover{background:var(--sage-dark); transform:translateY(-2px);}
+/* ============================================================
+   DWIGHT
+   ============================================================ */
+.dwight .win-body{padding:0; display:flex; flex-direction:column;}
+.dwight img{width:100%; aspect-ratio:16/9; object-fit:cover;}
+.dwight p{padding:14px 18px 16px; font-family:var(--pixel); font-size:14px; color:var(--line); border-top:3px solid var(--line); text-align:center;}
 
-/* Music Shelf */
-.shelf{display:flex; flex-direction:column; gap:14px;}
-.album-card{background:var(--cream); border-radius:14px; padding:16px; box-shadow:0 4px 10px rgba(0,0,0,0.06); transition:transform 0.2s ease, box-shadow 0.2s ease;}
-.album{cursor:pointer; display:flex; align-items:center; justify-content:space-between;}
-.album-card:hover{transform:translateY(-3px); box-shadow:0 6px 14px rgba(0,0,0,0.1);}
-.album-head{display:flex; align-items:center; gap:16px;}
-.album .disc{width:46px; height:46px; border-radius:50%; background:conic-gradient(var(--plum), var(--gold), var(--sage), var(--plum)); position:relative; flex-shrink:0; border:2px solid var(--ink);}
-.album .disc::after{content:""; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:12px; height:12px; background:var(--cream); border:2px solid var(--ink); border-radius:50%;}
-.album span{font-weight:800; font-size:1.05rem; display:block;}
-.album small{color:#8a8175; display:block; font-weight:400;}
-.play-icon{font-size:1.2rem; color:var(--plum); opacity:0.5;}
-.album-card:hover .play-icon{opacity:1;}
-@keyframes spin { 100% { transform:rotate(360deg); } }
-.disc.playing { animation: spin 2s linear infinite; }
-.track-player { margin-top: 12px; display: none; }
-.track-player.active { display: block; }
+/* ============================================================
+   GATOS
+   ============================================================ */
+.video{border:3px solid var(--line); border-radius:10px; overflow:hidden; aspect-ratio:16/9; background:#000;}
+.video iframe{width:100%; height:100%; border:0; display:block;}
+.gatos-acoes{margin-top:16px;}
+.cats .win-body{position:relative;}
+.chuva{position:absolute; inset:0; pointer-events:none; overflow:hidden;}
+.chuva img{position:absolute; width:58px; animation:pula .45s cubic-bezier(.3,1.6,.5,1) both;}
+@keyframes pula{from{transform:scale(0) rotate(-30deg);} to{transform:scale(1) rotate(var(--r, 0deg));}}
 
-/* Bookmark */
-.bookmark{display:flex; gap:16px; align-items:flex-start;}
-.bookmark .ribbon{width:26px; min-height:70px; background:var(--plum); clip-path:polygon(0 0,100% 0,100% 85%,50% 100%,0 85%); flex-shrink:0;}
-#quoteText{font-style:italic; color:var(--ink); font-size:1.05rem;}
+/* ============================================================
+   FRASES
+   ============================================================ */
+.pagina{
+  position:relative; padding:6px 4px 6px 34px; min-height:9.6em;
+  background:repeating-linear-gradient(180deg, transparent 0 calc(1.6em - 1px), var(--line-soft) calc(1.6em - 1px) 1.6em);
+  line-height:1.6em; font-size:18px;
+}
+.pagina::before{content:""; position:absolute; left:20px; top:0; bottom:0; width:2px; background:var(--dot-p);}
+#frase{font-style:italic; font-weight:600;}
+#autor{font-size:15px; color:var(--muted);}
+.pagina.vira{animation:vira .35s ease;}
+@keyframes vira{0%{opacity:1; transform:none;} 45%{opacity:0; transform:translateX(-14px) rotate(-1deg);} 55%{opacity:0; transform:translateX(14px) rotate(1deg);} 100%{opacity:1; transform:none;}}
+.caderno-acoes{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:18px;}
+.contador{font-family:var(--pixel); font-size:13px; color:var(--muted);}
+.rascunho{margin-top:24px;}
+.rascunho label{display:block; font-family:var(--pixel); font-size:13px; color:var(--line); margin-bottom:8px;}
+.rascunho textarea{
+  width:100%; min-height:120px; resize:vertical;
+  font-family:var(--hand); font-size:24px; line-height:1.3; color:var(--ink);
+  background:#fff; border:3px solid var(--line); border-radius:10px; padding:10px 14px;
+}
 
-footer{text-align:center; padding:44px 20px 60px; color:#8a8175;}
-footer .sign{font-family:'Caveat', cursive; font-size:1.8rem; color:var(--plum); display:block; margin-top:6px;}
+/* ============================================================
+   ABRAÇO
+   ============================================================ */
+.abraco .win-body{display:grid; justify-items:center; gap:18px;}
+.abraco .gif{width:100%; max-width:360px; aspect-ratio:4/3; border:3px solid var(--line); border-radius:10px; overflow:hidden; background:var(--butter); display:grid; place-items:center;}
+.abraco .gif img{width:100%; height:100%; object-fit:cover; animation:pula .45s cubic-bezier(.3,1.6,.5,1) both;}
+.abraco .gif .espera{width:84px; height:84px; animation:boia 3s ease-in-out infinite;}
 
-@media (max-width:480px){
-  .bookmark{flex-direction:column; align-items:flex-start;}
+/* ============================================================
+   CORREIO
+   ============================================================ */
+.correio-nota{font-family:var(--pixel); font-size:13px; color:var(--muted); margin-bottom:16px;}
+.cartas{list-style:none; margin:0; padding:0; display:grid; gap:14px; grid-template-columns:repeat(2, minmax(0,1fr));}
+.carta-btn{
+  width:100%; height:100%; display:grid; justify-items:center; gap:8px; text-align:center;
+  padding:16px 10px; cursor:pointer;
+  background:#fff; border:3px solid var(--line); border-radius:12px;
+  font-family:var(--body); font-size:15px; font-weight:600; line-height:1.3;
+  box-shadow:3px 3px 0 var(--line-soft);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.carta-btn:hover{transform:translateY(-3px); box-shadow:4px 6px 0 var(--line-soft);}
+.carta-btn .env{position:relative; width:64px; height:64px;}
+.carta-btn .env img{width:100%; height:100%;}
+.carta-btn .cadeado{position:absolute; width:26px; height:26px; right:-12px; bottom:-6px;}
+.carta-btn.aberta .cadeado{display:none;}
+.carta-btn.trancada .env > img:first-child{filter:grayscale(.55); opacity:.8;}
+.carta-texto{
+  font-family:var(--hand); font-size:27px; line-height:1.3; white-space:pre-line;
+  background:repeating-linear-gradient(180deg, #fff 0 calc(1.3em - 1px), var(--line-soft) calc(1.3em - 1px) 1.3em);
+  padding:4px 6px; border-radius:6px;
+}
+
+/* ============================================================
+   RELÓGIO, AVISOS, SOBRE
+   ============================================================ */
+.mini .win-body{display:grid; gap:14px;}
+.relogio-num{display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; text-align:center;}
+.relogio-num div{background:#fff; border:3px solid var(--line); border-radius:10px; padding:10px 4px;}
+.relogio-num b{display:block; font-family:var(--pixel); font-weight:400; font-size:clamp(24px, 7vw, 34px); color:var(--line); line-height:1.1;}
+.relogio-num small{font-family:var(--pixel); font-size:11px; color:var(--muted);}
+.nota{font-size:14px; color:var(--muted);}
+.progresso{height:18px; border:3px solid var(--line); border-radius:6px; padding:2px; background:#fff;}
+.progresso span{display:block; height:100%; width:100%; background:repeating-linear-gradient(90deg, var(--bar-green) 0 10px, transparent 10px 13px); animation:carrega 1.2s steps(14) both;}
+.mini .acoes{display:flex; justify-content:flex-end;}
+.sobre li{margin-bottom:6px;}
+.sobre ul{margin:0; padding-left:18px; font-size:14px; color:var(--muted);}
+
+/* ============================================================
+   BARRA DE TAREFAS + MENU INICIAR
+   ============================================================ */
+.taskbar{
+  position:fixed; left:0; right:0; bottom:0; z-index:200;
+  height:var(--taskbar); padding:6px 8px;
+  display:flex; align-items:center; gap:8px;
+  background:rgba(255,250,246,.9); backdrop-filter:blur(8px);
+  border-top:3px solid var(--line);
+}
+.iniciar{
+  display:flex; align-items:center; gap:8px; height:40px; padding:0 14px 0 8px; cursor:pointer;
+  font-family:var(--pixel); font-size:14px; color:var(--ink);
+  background:var(--bar-green); border:3px solid var(--line); border-radius:10px;
+  box-shadow:2px 2px 0 var(--line);
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.iniciar img{width:26px; height:26px;}
+.iniciar:hover{transform:translate(-1px,-1px); box-shadow:3px 3px 0 var(--line);}
+.iniciar[aria-expanded="true"]{transform:translate(2px,2px); box-shadow:0 0 0 var(--line); background:#c3ee93;}
+.tarefas{flex:1; min-width:0; display:flex; gap:6px; overflow-x:auto; scrollbar-width:none;}
+.tarefa{
+  display:flex; align-items:center; gap:6px; height:40px; padding:0 10px; flex-shrink:0; cursor:pointer;
+  font-family:var(--pixel); font-size:12px; color:var(--line);
+  background:#fff; border:2.5px solid var(--line-soft); border-radius:9px;
+  animation:pula .3s cubic-bezier(.3,1.6,.5,1) both;
+}
+.tarefa img{width:24px; height:24px;}
+.tarefa.focada{border-color:var(--line); background:var(--bar-blue);}
+.tarefa.minimizada{border-style:dashed; background:var(--butter);}
+.tarefa span{display:none;}
+@media (min-width:900px){ .tarefa span{display:inline;} }
+.tray{display:flex; align-items:center; gap:2px; flex-shrink:0;}
+.tray button{
+  display:flex; align-items:center; gap:6px; height:40px; min-width:44px; padding:0 8px; cursor:pointer;
+  font-family:var(--pixel); font-size:13px; color:var(--muted);
+  background:none; border:2px solid transparent; border-radius:9px;
+  transition:border-color .15s ease, background .15s ease;
+}
+.tray button:hover{border-color:var(--line-soft); background:#fff;}
+.tray img{width:22px; height:22px;}
+
+.menu{
+  position:fixed; z-index:210; left:8px; bottom:calc(var(--taskbar) + 8px);
+  width:min(300px, calc(100vw - 16px));
+}
+.menu ul{list-style:none; margin:0; padding:8px;}
+.menu li button{
+  width:100%; display:flex; align-items:center; gap:12px; padding:8px 10px; cursor:pointer;
+  background:none; border:2px solid transparent; border-radius:10px; text-align:left;
+  font-family:var(--pixel); font-size:14px; color:var(--ink);
+}
+.menu li button:hover, .menu li button:focus-visible{background:var(--bar-blue); border-color:var(--line-soft);}
+.menu li img{width:34px; height:34px;}
+.menu hr{border:0; border-top:2px dashed var(--line-soft); margin:6px 8px;}
+.menu.abrindo{animation:sobe .22s cubic-bezier(.2,.9,.3,1.2) both; transform-origin:bottom left;}
+@keyframes sobe{from{opacity:0; transform:translateY(16px) scale(.96);}}
+
+/* ============================================================
+   ENTRADA DO DESKTOP
+   ============================================================ */
+body:not(.ligado) .principal,
+body:not(.ligado) .icones li,
+body:not(.ligado) .taskbar{opacity:0;}
+body.ligado .principal{animation:entraJanela .6s .25s cubic-bezier(.2,.9,.3,1.15) both;}
+body.ligado .icones li{animation:entraIcone .45s cubic-bezier(.2,.9,.3,1.3) both; animation-delay:calc(.5s + var(--i) * 70ms);}
+body.ligado .taskbar{animation:entraBarra .5s .15s cubic-bezier(.2,.8,.3,1) both;}
+@keyframes entraJanela{from{opacity:0; transform:translateY(30px) scale(.88);}}
+@keyframes entraIcone{from{opacity:0; transform:translateY(14px) scale(.6);}}
+@keyframes entraBarra{from{transform:translateY(100%);}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important; animation-delay:0s !important; animation-iteration-count:1 !important; transition-duration:.01ms !important;}
 }
 </style>
 </head>
 <body>
 
-<div id="gate" onclick="enterSite()">
-  <div class="gate-cat">🐈‍⬛🍵</div>
-  <h1>toque pra entrar</h1>
-  <p>tem um cantinho fofo esperando por você, com uma musiquinha de Life is Strange tocando junto</p>
-</div>
-
-<div class="hero">
-  <h1>um cantinho só seu</h1>
-  <p>fiz isso pra você ter um lugar bobo e fofo pra passar uns minutos. sem pressa nenhuma, só rola a página no seu tempo.</p>
-  <div class="player-box">
-    <!-- O src do Spotify agora é definido diretamente no HTML para não quebrar os eventos internos do widget -->
-    <iframe id="lisPlayer" src="https://open.spotify.com/embed/track/2ynCjjrmED5CfiVn2ZLkUk?utm_source=generator" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+<!-- ================= BOOT ================= -->
+<div id="boot">
+  <div class="win bar-blue">
+    <div class="win-bar"><span class="titulo">nanda.os</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+    <div class="win-body">
+      <img class="gato" src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Black%20cat/3D/black_cat_3d.png" alt="">
+      <h1>nanda.os</h1>
+      <div class="loading" aria-hidden="true"><span></span></div>
+      <p class="status" id="bootStatus">carregando coisas fofas...</p>
+      <button class="btn verde" id="ligar">ligar o computador</button>
+    </div>
   </div>
-  <p class="player-caption">"Obstacles", de Syd Matters, aquela do menu de Life is Strange</p>
 </div>
 
-<div class="wrap" id="wrap">
-
-  <!-- SEÇÃO DO CHÁ -->
-  <div class="paw-trail">🐾 🐾 🐾</div>
-  <section style="text-align:center;">
-    <div class="corner-cat tr"><div class="ce l"></div><div class="ce r"></div><div class="cf"></div></div>
-    <h2>pausa pro chá</h2>
-    <p class="lead">um lembrete pra tomar um chá quentinho e respirar fundo.</p>
-    
-    <div class="tea-scene">
-      <img src="https://cdn-icons-png.flaticon.com/512/1601/1601057.png" alt="Xícara de chá" class="tea-img" onclick="petTea()">
-      <div id="teaHint" class="hint">clique na xícara para respirarmos juntos</div>
+<!-- ================= DESKTOP ================= -->
+<main class="desktop" id="desktop">
+  <section class="win principal bar-pink" id="principal" aria-labelledby="tituloPrincipal">
+    <div class="win-bar">
+      <span class="titulo">bem_vinda.txt</span>
+      <span class="controles">
+        <button class="ctl min" id="pMin" aria-label="minimizar" title="minimizar"></button>
+        <button class="ctl zoom" id="pZoom" aria-label="tela cheia" aria-pressed="false" title="tela cheia"></button>
+        <button class="ctl x" id="pFechar" aria-label="fechar" title="fechar"></button>
+      </span>
     </div>
-  </section>
-
-  <!-- SEÇÃO DOS GATOS -->
-  <div class="paw-trail">🐾 🐾 🐾</div>
-  <section>
-    <div class="corner-cat tl"><div class="ce l"></div><div class="ce r"></div><div class="cf"></div></div>
-    <h2>gatinhos bobos</h2>
-    <p class="lead">pra distrair a cabeça. não precisa ver tudo, só o suficiente pra dar um sorrisinho.</p>
-    <div style="border-radius:12px; overflow:hidden; box-shadow:var(--shadow);">
-      <!-- ID atualizado para um vídeo sem restrição de incorporação -->
-      <iframe width="100%" height="280" src="https://www.youtube.com/embed/UF5MLCkyGzs" title="Cats being silly" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
-  </section>
-
-  <!-- SEÇÃO ONE DIRECTION -->
-  <div class="paw-trail">🐾 🐾 🐾</div>
-  <section>
-    <div class="corner-cat tr"><div class="ce l"></div><div class="ce r"></div><div class="cf"></div></div>
-    <h2>a estante de 1D</h2>
-    <p class="lead">clica em um disco pra ele abrir e tocar a música direitinho.</p>
-    
-    <div class="shelf">
-      <!-- IDs atualizados com lyric videos extraídos da API do YouTube -->
-      <div class="album-card" id="card-upallnight">
-        <div class="album" onclick="toggle1D('upallnight', 'mfavkCY52MI')">
-          <div class="album-head"><div class="disc" id="disc-upallnight"></div><div><span>Up All Night</span><small> (What Makes You Beautiful)</small></div></div>
-          <div class="play-icon">▶</div>
+    <div class="win-body">
+      <div style="display:grid; gap:22px;">
+        <h1 id="tituloPrincipal">um cantinho só seu</h1>
+        <div class="spotify">
+          <iframe id="spotify" src="https://open.spotify.com/embed/track/7Jh1bpe76CNTCgdgAdBw4Z?utm_source=generator&theme=0" data-src="https://open.spotify.com/embed/track/7Jh1bpe76CNTCgdgAdBw4Z?utm_source=generator&theme=0" width="100%" height="152" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Heroes, de David Bowie, no Spotify"></iframe>
         </div>
-        <div class="track-player" id="player-upallnight"></div>
       </div>
-
-      <div class="album-card" id="card-takemehome">
-        <div class="album" onclick="toggle1D('takemehome', 'jGTafzFRGU0')">
-          <div class="album-head"><div class="disc" id="disc-takemehome"></div><div><span>Take Me Home</span><small>(Kiss You)</small></div></div>
-          <div class="play-icon">▶</div>
-        </div>
-        <div class="track-player" id="player-takemehome"></div>
-      </div>
-
-      <div class="album-card" id="card-midnight">
-        <div class="album" onclick="toggle1D('midnight', 'B6dZCMzCs5s')">
-          <div class="album-head"><div class="disc" id="disc-midnight"></div><div><span>Midnight Memories</span><small>(Story of My Life)</small></div></div>
-          <div class="play-icon">▶</div>
-        </div>
-        <div class="track-player" id="player-midnight"></div>
-      </div>
-
-      <div class="album-card" id="card-four">
-        <div class="album" onclick="toggle1D('four', 'I3IcQsfC7jA')">
-          <div class="album-head"><div class="disc" id="disc-four"></div><div><span>Four</span><small>(Night Changes)</small></div></div>
-          <div class="play-icon">▶</div>
-        </div>
-        <div class="track-player" id="player-four"></div>
-      </div>
-
-      <div class="album-card" id="card-madeintheam">
-        <div class="album" onclick="toggle1D('madeintheam', 'r7cLPlyoegI')">
-          <div class="album-head"><div class="disc" id="disc-madeintheam"></div><div><span>Made in the A.M.</span><small>(History)</small></div></div>
-          <div class="play-icon">▶</div>
-        </div>
-        <div class="track-player" id="player-madeintheam"></div>
+      <div class="gatos-hero" aria-hidden="true">
+        <img class="g1" src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Cat/3D/cat_3d.png" alt="">
+        <img class="g2" src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Black%20cat/3D/black_cat_3d.png" alt="">
       </div>
     </div>
   </section>
 
-  <!-- SEÇÃO LETRAS -->
-  <div class="paw-trail">🐾 🐾 🐾</div>
-  <section>
-    <div class="corner-cat tl"><div class="ce l"></div><div class="ce r"></div><div class="cf"></div></div>
-    <h2>pausa pra letras(ou frases)</h2>
-    <div class="bookmark">
-      <div class="ribbon"></div>
-      <div>
-        <p id="quoteText">o Pequeno Príncipe dizia que a gente só enxerga direito com o coração. talvez por isso as pessoas que mais gostam de você nem sempre precisem dizer isso em voz alta.</p>
-        <button class="action-btn" style="margin-top:12px; background:var(--plum); width: auto;" onclick="nextQuote()">virar a página</button>
+  <ul class="icones" id="icones" aria-label="programas"></ul>
+</main>
+
+<!-- ================= JANELAS DE APP ================= -->
+<section class="win app bar-blue" id="app-vitrola" data-app="vitrola" style="--w:960px" hidden tabindex="-1" aria-label="vitrola">
+  <div class="win-bar"><span class="titulo"></span><button class="fechar" aria-label="fechar">x</button></div>
+  <div class="win-body">
+    <div class="vitrola-topo">
+      <div class="deck">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/27/Thorens_TD150_MkII_White_Ash_-_Top_View_without_cover_%2811071975433%29.jpg" alt="vitrola de madeira clara vista de cima">
+        <div class="disco" id="disco">
+          <div class="vinil" id="vinil"><img id="rotulo" alt=""></div>
+          <div class="brilho"></div>
+        </div>
+      </div>
+      <div class="tocando" aria-live="polite">
+        <p class="rotulo" id="estado">nada tocando</p>
+        <p class="faixa" id="faixa">escolhe um disco</p>
+        <p class="album" id="albumNome"></p>
+        <div class="player" id="playerBox">
+          <div id="yt"></div>
+          <div class="vazio">o som sai daqui quando o disco encostar na vitrola</div>
+        </div>
+        <div><button class="btn rosa" id="tirarDisco" disabled>tirar o disco</button></div>
       </div>
     </div>
-  </section>
+    <ul class="capas" id="capas" aria-label="estante de discos"></ul>
+  </div>
+</section>
 
-  <!-- SEÇÃO ABRAÇO -->
-  <section style="text-align:center;">
-    <div class="corner-cat tr"><div class="ce l"></div><div class="ce r"></div><div class="cf"></div></div>
-    <h2>preciso de um abraço</h2>
-    <p class="lead">pode pedir sem vergonha nenhuma. clica aí.</p>
-    <div style="display:flex; justify-content:center;">
-      <button class="action-btn" onclick="giveHug()">me dá um abraço</button>
+<section class="win app bar-yellow dwight" id="app-dwight" data-app="dwight" style="--w:560px" hidden tabindex="-1" aria-label="dwight">
+  <div class="win-bar"><span class="titulo"></span><button class="fechar" aria-label="fechar">x</button></div>
+  <div class="win-body">
+    <img src="img/dwight-meditando.webp" alt="Dwight, de The Office, meditando de olhos fechados num gramado">
+    <p>Bears. Beets. Battlestar Galactica.</p>
+  </div>
+</section>
+
+<section class="win app bar-pink cats" id="app-gatos" data-app="gatos" style="--w:640px" hidden tabindex="-1" aria-label="gatos">
+  <div class="win-bar"><span class="titulo"></span><button class="fechar" aria-label="fechar">x</button></div>
+  <div class="win-body">
+    <div class="video">
+      <iframe id="videoGatos" data-src="https://www.youtube.com/embed/phRn9Thc1zc" title="vídeo de gatos" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
-    <div id="hugContainer" style="margin-top:16px;"></div>
-  </section>
+    <div class="gatos-acoes"><button class="btn rosa" id="maisGatos">quero mais gatos</button></div>
+    <div class="chuva" id="chuva" aria-hidden="true"></div>
+  </div>
+</section>
 
-</div>
+<section class="win app bar-yellow" id="app-frases" data-app="frases" style="--w:540px" hidden tabindex="-1" aria-label="frases">
+  <div class="win-bar"><span class="titulo"></span><button class="fechar" aria-label="fechar">x</button></div>
+  <div class="win-body">
+    <div class="pagina" id="pagina">
+      <p id="frase"></p>
+      <p id="autor"></p>
+    </div>
+    <div class="caderno-acoes">
+      <span class="contador" id="contador"></span>
+      <button class="btn amarelo" id="virar">virar a página</button>
+    </div>
+    <div class="rascunho">
+      <label for="verso">rascunho.txt</label>
+      <textarea id="verso" placeholder="um verso, uma rima..."></textarea>
+    </div>
+  </div>
+</section>
 
-<footer>
-  esse cantinho é só um pedacinho de tudo que eu sei que vc gosta.
-  <span class="sign">Nem todo mundo tem um primo lindo e nerd</span>
+<section class="win app bar-mint abraco" id="app-abraco" data-app="abraco" style="--w:460px" hidden tabindex="-1" aria-label="abraço">
+  <div class="win-bar"><span class="titulo"></span><button class="fechar" aria-label="fechar">x</button></div>
+  <div class="win-body">
+    <div class="gif" id="gifAbraco">
+      <img class="espera" src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/People%20hugging/3D/people_hugging_3d.png" alt="">
+    </div>
+    <button class="btn verde" id="btnAbraco">me dá um abraço</button>
+  </div>
+</section>
+
+<section class="win app bar-pink" id="app-correio" data-app="correio" style="--w:560px" hidden tabindex="-1" aria-label="correio">
+  <div class="win-bar"><span class="titulo"></span><button class="fechar" aria-label="fechar">x</button></div>
+  <div class="win-body">
+    <p class="correio-nota" id="correioNota">abrem quando o relógio zerar</p>
+    <ul class="cartas" id="cartas"></ul>
+  </div>
+</section>
+
+<section class="win app mini bar-blue" id="app-relogio" data-app="relogio" style="--w:430px" hidden tabindex="-1" aria-label="relógio">
+  <div class="win-bar"><span class="titulo"></span><button class="fechar" aria-label="fechar">x</button></div>
+  <div class="win-body">
+    <p id="relogioFrase">faltam:</p>
+    <div class="relogio-num" id="relogioNum">
+      <div><b id="rD">0</b><small>dias</small></div>
+      <div><b id="rH">00</b><small>horas</small></div>
+      <div><b id="rM">00</b><small>min</small></div>
+      <div><b id="rS">00</b><small>seg</small></div>
+    </div>
+    <p class="nota" id="relogioNota">25 de novembro, 17h.</p>
+  </div>
+</section>
+
+<section class="win app mini bar-pink" id="app-carta" data-app="carta" style="--w:480px" hidden tabindex="-1" aria-label="carta">
+  <div class="win-bar"><span class="titulo" id="cartaTitulo">carta.txt</span><button class="fechar" aria-label="fechar">x</button></div>
+  <div class="win-body"><p class="carta-texto" id="cartaTexto"></p></div>
+</section>
+
+<section class="win app mini bar-yellow" id="app-trancada" data-app="trancada" style="--w:380px" hidden tabindex="-1" aria-label="carta trancada">
+  <div class="win-bar"><span class="titulo">acesso negado</span><button class="fechar" aria-label="fechar">x</button></div>
+  <div class="win-body">
+    <p>essa ainda tá trancada.</p>
+    <p class="nota" id="avisoFalta"></p>
+    <div class="acoes"><button class="btn amarelo" data-fecha>ok</button></div>
+  </div>
+</section>
+
+<section class="win app mini canto bar-green" id="app-tcc" data-app="tcc" style="--w:340px" hidden tabindex="-1" aria-label="tcc.docx">
+  <div class="win-bar"><span class="titulo">tcc.docx</span><button class="fechar" aria-label="fechar">x</button></div>
+  <div class="win-body">
+    <p>salvo com sucesso.</p>
+    <div class="progresso" aria-hidden="true"><span></span></div>
+    <div class="acoes"><button class="btn verde" data-fecha>ok, eu sou incrível</button></div>
+  </div>
+</section>
+
+<section class="win app mini bar-mint sobre" id="app-sobre" data-app="sobre" style="--w:420px" hidden tabindex="-1" aria-label="sobre este computador">
+  <div class="win-bar"><span class="titulo">sobre este computador</span><button class="fechar" aria-label="fechar">x</button></div>
+  <div class="win-body">
+    <p>nanda.os, versão 2.</p>
+    <ul>
+      <li>ícones: Fluent Emoji, da Microsoft (licença MIT)</li>
+      <li>foto da vitrola: Jacques, CC BY 2.0, via Wikimedia Commons</li>
+      <li>músicas e vídeos: Spotify e YouTube</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= MENU INICIAR ================= -->
+<nav class="win menu bar-green" id="menu" hidden aria-label="menu iniciar">
+  <div class="win-bar"><span class="titulo">programas</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+  <ul id="menuLista"></ul>
+</nav>
+
+<!-- ================= BARRA DE TAREFAS ================= -->
+<footer class="taskbar">
+  <button class="iniciar" id="iniciar" aria-expanded="false" aria-controls="menu">
+    <img src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Cat%20face/3D/cat_face_3d.png" alt="">iniciar
+  </button>
+  <div class="tarefas" id="tarefas"></div>
+  <div class="tray">
+    <button id="som" aria-pressed="true" aria-label="som ligado"><img id="somIcone" alt=""></button>
+    <button id="tray" aria-label="abrir o relógio">
+      <img id="trayIcone" src="https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Hourglass%20not%20done/3D/hourglass_not_done_3d.png" alt="">
+      <span id="trayTexto">--</span>
+    </button>
+  </div>
 </footer>
 
 <script>
-// A função agora apenas controla a visibilidade da página. O iframe do Spotify cuida de si mesmo.
-function enterSite(){
-  document.getElementById('gate').classList.add('hide');
-  document.getElementById('wrap').classList.add('show');
+/* ============================================================
+   CONFIGURAÇÃO
+   ============================================================ */
+const ICONES = 'https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/';
+
+// fim da contagem: 25/11/2026 às 17h, horário de Brasília (-03:00)
+const FIM = new Date('2026-11-25T17:00:00-03:00');
+// pra testar com as cartas abertas: coloque ?abrir no fim do endereço
+const FORCAR_ABERTO = new URLSearchParams(location.search).has('abrir');
+
+// programas do desktop: id da janela, nome do arquivo e ícone
+const APPS = [
+  { id:'vitrola', nome:'vitrola.exe',  icone:'Optical%20disk/3D/optical_disk_3d.png' },
+  { id:'gatos',   nome:'cats.exe',     icone:'Grinning%20cat/3D/grinning_cat_3d.png' },
+  { id:'dwight',  nome:'dwight.jpg',   icone:'Framed%20picture/3D/framed_picture_3d.png' },
+  { id:'frases',  nome:'frases.txt',   icone:'Notebook/3D/notebook_3d.png' },
+  { id:'abraco',  nome:'abraco.exe',   icone:'People%20hugging/3D/people_hugging_3d.png' },
+  { id:'correio', nome:'correio',      icone:'Love%20letter/3D/love_letter_3d.png' },
+  { id:'relogio', nome:'relogio.exe',  icone:'Hourglass%20not%20done/3D/hourglass_not_done_3d.png' },
+];
+
+const DISCOS = [
+  { id:'upallnight', album:'Up All Night', musica:'What Makes You Beautiful', yt:'mfavkCY52MI',
+    capa:'https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/73/ed/36/73ed3682-50b4-7f16-48ce-8e689ae9a67e/mzi.nxqeahlg.jpg/600x600bb.jpg' },
+  { id:'takemehome', album:'Take Me Home', musica:'Kiss You', yt:'jGTafzFRGU0',
+    capa:'https://is1-ssl.mzstatic.com/image/thumb/Music/v4/b0/36/5c/b0365c80-52f1-5698-5644-10802ba93472/886443503168.jpg/600x600bb.jpg' },
+  { id:'midnight', album:'Midnight Memories', musica:'Story of My Life', yt:'B6dZCMzCs5s',
+    capa:'https://is1-ssl.mzstatic.com/image/thumb/Features125/v4/73/f7/aa/73f7aa2b-bd94-a528-c42b-24a3e588e21b/dj.yyouuvfg.jpg/600x600bb.jpg' },
+  { id:'four', album:'FOUR', musica:'Night Changes', yt:'I3IcQsfC7jA',
+    capa:'https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/2d/f9/79/2df9796f-db81-87db-4b9f-35168bcb6c8e/mzm.djekhjcs.jpg/600x600bb.jpg' },
+  { id:'madeintheam', album:'Made in the A.M.', musica:'History', yt:'r7cLPlyoegI',
+    capa:'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/45/ac/db/45acdb3d-1a85-52e3-43d5-195f8f58067d/mzm.qyfviqnb.jpg/600x600bb.jpg' },
+];
+
+// CAIO: troque os textos pelas suas cartas. \n quebra a linha.
+const CARTAS = [
+  { titulo:'abra quando a banca acabar',         texto:'(escreve aqui, Caio)' },
+  { titulo:'abra quando cair a ficha',           texto:'(escreve aqui, Caio)' },
+  { titulo:'abra quando quiser comemorar',       texto:'(escreve aqui, Caio)' },
+  { titulo:'abra quando bater saudade da facul', texto:'(escreve aqui, Caio)' },
+];
+
+const FRASES = [
+  { t:'Só se vê bem com o coração. O essencial é invisível aos olhos.', a:'Antoine de Saint-Exupéry, O Pequeno Príncipe' },
+  { t:'Tu te tornas eternamente responsável por aquilo que cativas.', a:'Antoine de Saint-Exupéry, O Pequeno Príncipe' },
+  { t:'Foi o tempo que perdeste com a tua rosa que fez a tua rosa tão importante.', a:'Antoine de Saint-Exupéry, O Pequeno Príncipe' },
+  { t:'Nós aceitamos o amor que achamos merecer.', a:'Stephen Chbosky, As Vantagens de Ser Invisível' },
+  { t:'E naquele momento, eu juro que nós éramos infinitos.', a:'Stephen Chbosky, As Vantagens de Ser Invisível' },
+  { t:'Tudo vale a pena se a alma não é pequena.', a:'Fernando Pessoa, Mar Português' },
+  { t:'Não sou nada. Nunca serei nada. Não posso querer ser nada. À parte isso, tenho em mim todos os sonhos do mundo.', a:'Álvaro de Campos (Fernando Pessoa), Tabacaria' },
+  { t:'O poeta é um fingidor. Finge tão completamente que chega a fingir que é dor a dor que deveras sente.', a:'Fernando Pessoa, Autopsicografia' },
+  { t:'Ser poeta é ser mais alto, é ser maior do que os homens!', a:'Florbela Espanca, Ser Poeta' },
+  { t:'Amor é fogo que arde sem se ver; é ferida que dói, e não se sente.', a:'Luís de Camões' },
+  { t:'Ora (direis) ouvir estrelas! Certo perdeste o senso!', a:'Olavo Bilac, Via Láctea' },
+  { t:'Tenha paciência com tudo o que não está resolvido no seu coração, e tente amar as próprias perguntas.', a:'Rainer Maria Rilke, Cartas a um Jovem Poeta' },
+  { t:'Não há portão, fechadura ou ferrolho que você consiga impor à liberdade da minha mente.', a:'Virginia Woolf, Um Teto Todo Seu' },
+  { t:'A esperança é a coisa com penas que pousa na alma.', a:'Emily Dickinson' },
+  { t:'Eu me contradigo? Muito bem, então eu me contradigo. Sou amplo, contenho multidões.', a:'Walt Whitman, Canção de Mim Mesmo' },
+  { t:'comi o cu de quem leu', a:'autor desconhecido' },
+];
+
+const $ = (id) => document.getElementById(id);
+const reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const largo = () => matchMedia('(min-width: 900px)').matches;
+
+/* ============================================================
+   SONS
+   Todos gerados na hora com a Web Audio API (osciladores),
+   então não tem arquivo de áudio nem som de terceiros.
+   ============================================================ */
+const Som = {
+  ctx:null,
+  ligado:true,
+  iniciar(){
+    if (!this.ctx){
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) this.ctx = new AC();
+    }
+    if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+  },
+  // toca uma nota: frequência (Hz), quando começa (s), duração (s), forma da onda, volume
+  nota(freq, quando = 0, dur = .15, tipo = 'sine', vol = .12){
+    if (!this.ligado || !this.ctx) return;
+    const t = this.ctx.currentTime + quando;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = tipo;
+    osc.frequency.setValueAtTime(freq, t);
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(vol, t + .012);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    osc.connect(gain).connect(this.ctx.destination);
+    osc.start(t);
+    osc.stop(t + dur + .05);
+  },
+  ruido(dur = .6, vol = .05, filtro = 2500){
+    if (!this.ligado || !this.ctx) return;
+    const n = Math.floor(this.ctx.sampleRate * dur);
+    const buf = this.ctx.createBuffer(1, n, this.ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    // chiado de vinil: estalos esparsos
+    for (let i = 0; i < n; i++) d[i] = Math.random() < .02 ? (Math.random() * 2 - 1) : (Math.random() * 2 - 1) * .08;
+    const src = this.ctx.createBufferSource();
+    const f = this.ctx.createBiquadFilter();
+    const g = this.ctx.createGain();
+    f.type = 'highpass'; f.frequency.value = filtro;
+    g.gain.value = vol;
+    src.buffer = buf;
+    src.connect(f).connect(g).connect(this.ctx.destination);
+    src.start();
+  },
+  clique(){ this.nota(1700, 0, .035, 'square', .025); },
+  abre(){ this.nota(660, 0, .12, 'triangle', .1); this.nota(990, .07, .18, 'triangle', .1); },
+  fecha(){ this.nota(880, 0, .1, 'triangle', .08); this.nota(587, .06, .16, 'triangle', .08); },
+  menu(){ this.nota(784, 0, .08, 'sine', .08); this.nota(1175, .05, .12, 'sine', .07); },
+  minimiza(){ this.nota(988, 0, .08, 'triangle', .08); this.nota(740, .05, .08, 'triangle', .08); this.nota(494, .1, .16, 'triangle', .08); },
+  ding(){ this.nota(1047, 0, .7, 'sine', .12); this.nota(1568, 0, .5, 'sine', .05); },
+  erro(){ this.nota(392, 0, .2, 'square', .05); this.nota(294, .16, .35, 'square', .05); },
+  vira(){ this.ruido(.18, .05, 1800); },
+  disco(){ this.nota(70, 0, .25, 'sine', .25); this.ruido(1.1, .06, 3000); },
+  // som de ligar: um acorde subindo, bem anos 2000
+  ligar(){
+    [311.1, 466.2, 622.3, 784, 932.3, 1244.5].forEach((f, i) => {
+      this.nota(f, i * .11, 1.6 - i * .12, 'sine', .07);
+      this.nota(f / 2, i * .11, 1.2, 'triangle', .03);
+    });
+  },
+};
+
+try { Som.ligado = localStorage.getItem('cantinho-som') !== 'off'; } catch (e) {}
+function desenhaSom(){
+  $('somIcone').src = ICONES + (Som.ligado ? 'Speaker%20high%20volume/3D/speaker_high_volume_3d.png' : 'Muted%20speaker/3D/muted_speaker_3d.png');
+  $('som').setAttribute('aria-pressed', String(Som.ligado));
+  $('som').setAttribute('aria-label', Som.ligado ? 'som ligado' : 'som desligado');
+}
+$('som').addEventListener('click', () => {
+  Som.ligado = !Som.ligado;
+  try { localStorage.setItem('cantinho-som', Som.ligado ? 'on' : 'off'); } catch (e) {}
+  desenhaSom();
+  Som.clique();
+});
+desenhaSom();
+
+// clique retrô em todo botão que não tem som próprio
+document.addEventListener('pointerdown', (e) => {
+  const b = e.target.closest('button');
+  if (b && !b.closest('[data-sem-clique]')) Som.clique();
+});
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+setTimeout(() => { $('bootStatus').textContent = 'pronto.'; }, 1600);
+$('ligar').addEventListener('click', () => {
+  Som.iniciar();
+  Som.ligar();
+  $('boot').classList.add('saindo');
+  document.body.classList.add('ligado');
+  setTimeout(() => { $('boot').hidden = true; }, 750);
+  // o aviso do tcc aparece um pouquinho depois, como notificação
+  setTimeout(() => abrir('tcc', { som:'ding' }), 2600);
+});
+
+/* ============================================================
+   GERENCIADOR DE JANELAS
+   ============================================================ */
+let zTopo = 50;
+let cascata = 0;
+const abertas = new Set();
+
+// primeiro item do menu iniciar: a janela principal (pra reabrir depois de fechar)
+const principalLi = document.createElement('li');
+principalLi.innerHTML = `<button data-sem-clique data-abre="principal"><img src="${ICONES}Memo/3D/memo_3d.png" alt="">bem_vinda.txt</button>`;
+$('menuLista').append(principalLi);
+
+APPS.forEach((app, i) => {
+  const janela = $('app-' + app.id);
+  janela.querySelector('.titulo').innerHTML = `<img src="${ICONES + app.icone}" alt="">${app.nome}`;
+
+  const li = document.createElement('li');
+  li.style.setProperty('--i', i);
+  li.innerHTML = `<button class="icone" data-sem-clique data-abre="${app.id}"><img src="${ICONES + app.icone}" alt="">${app.nome}</button>`;
+  $('icones').append(li);
+
+  const mli = document.createElement('li');
+  mli.innerHTML = `<button data-sem-clique data-abre="${app.id}"><img src="${ICONES + app.icone}" alt="">${app.nome}</button>`;
+  $('menuLista').append(mli);
+});
+const sep = document.createElement('li'); sep.innerHTML = '<hr>'; $('menuLista').append(sep);
+const sobreLi = document.createElement('li');
+sobreLi.innerHTML = `<button data-sem-clique data-abre="sobre"><img src="${ICONES}Desktop%20computer/3D/desktop_computer_3d.png" alt="">sobre este computador</button>`;
+$('menuLista').append(sobreLi);
+
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-abre]');
+  if (!b) return;
+  fechaMenu(false);
+  if (b.dataset.abre === 'principal') abrePrincipal(b);
+  else abrir(b.dataset.abre, { origem:b });
+});
+
+function focar(janela){
+  zTopo += 1;
+  janela.style.zIndex = zTopo;
+  document.querySelectorAll('.app.focada').forEach((j) => j.classList.remove('focada'));
+  janela.classList.add('focada');
+  document.querySelectorAll('.tarefa').forEach((t) => t.classList.toggle('focada', t.dataset.id === janela.dataset.app));
 }
 
-let activeTrackKey = null;
-
-function toggle1D(trackKey, videoId) {
-  const playerContainer = document.getElementById('player-' + trackKey);
-  const discElement = document.getElementById('disc-' + trackKey);
-  
-  if (activeTrackKey === trackKey) {
-    playerContainer.innerHTML = '';
-    playerContainer.classList.remove('active');
-    discElement.classList.remove('playing');
-    activeTrackKey = null;
+function posiciona(janela){
+  // celular: desfaz qualquer arrasto anterior e devolve a janela pro lugar padrão do CSS
+  if (!largo()){ ['left','top','right','bottom','width','height','translate'].forEach((p) => janela.style[p] = ''); return; }
+  const w = Math.min(janela.offsetWidth, innerWidth - 40);
+  const h = janela.offsetHeight;
+  const livreH = innerHeight - 54;
+  // notificação: canto de baixo, à direita
+  if (janela.classList.contains('canto')){
+    janela.style.left = (innerWidth - w - 24) + 'px';
+    janela.style.top = (livreH - h - 20) + 'px';
     return;
   }
+  let x = (innerWidth - w) / 2 + 60 + cascata * 28;
+  let y = Math.max(16, (livreH - h) / 2) + cascata * 24;
+  x = Math.min(Math.max(16, x), innerWidth - w - 16);
+  y = Math.min(Math.max(16, y), Math.max(16, livreH - h - 16));
+  janela.style.left = x + 'px';
+  janela.style.top = y + 'px';
+  cascata = (cascata + 1) % 5;
+}
 
-  if (activeTrackKey) {
-    const prevContainer = document.getElementById('player-' + activeTrackKey);
-    const prevDisc = document.getElementById('disc-' + activeTrackKey);
-    if (prevContainer) {
-      prevContainer.innerHTML = '';
-      prevContainer.classList.remove('active');
+function abrir(id, { origem = null, som = 'abre' } = {}){
+  const janela = $('app-' + id);
+  if (!janela) return;
+  Som.iniciar();
+
+  if (!janela.hidden){ focar(janela); Som.clique(); return; }
+
+  janela.hidden = false;
+  posiciona(janela);
+  focar(janela);
+  Som[som]();
+  abertas.add(id);
+  atualizaTarefas();
+  document.querySelectorAll(`.icone[data-abre="${id}"]`).forEach((b) => b.classList.add('aberto'));
+
+  // a janela "nasce" do ícone que foi clicado
+  if (!reduz){
+    let de = 'translateY(24px) scale(.85)';
+    if (origem){
+      const o = origem.getBoundingClientRect(), j = janela.getBoundingClientRect();
+      const dx = (o.left + o.width / 2) - (j.left + j.width / 2);
+      const dy = (o.top + o.height / 2) - (j.top + j.height / 2);
+      de = `translate(${dx}px, ${dy}px) scale(.15)`;
     }
-    if (prevDisc) prevDisc.classList.remove('playing');
+    janela.animate([{ transform:de, opacity:0 }, { transform:'none', opacity:1 }],
+      { duration:380, easing:'cubic-bezier(.2,.9,.3,1.1)' });
   }
-
-  playerContainer.innerHTML = `<iframe width="100%" height="80" src="https://www.youtube.com/embed/${videoId}?autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;"></iframe>`;
-  playerContainer.classList.add('active');
-  discElement.classList.add('playing');
-  activeTrackKey = trackKey;
+  janela.focus({ preventScroll:true });
+  aoAbrir[id]?.();
 }
 
-const purrAudio = new Audio('https://upload.wikimedia.org/wikipedia/commons/4/4b/Purr.ogg');
-purrAudio.volume = 0.6;
-let isBreathing = false;
+function fechar(id){
+  const janela = $('app-' + id);
+  if (!janela || janela.hidden) return;
+  Som.fecha();
+  const termina = () => {
+    janela.hidden = true;
+    janela.classList.remove('focada');
+    abertas.delete(id);
+    atualizaTarefas();
+    document.querySelectorAll(`.icone[data-abre="${id}"]`).forEach((b) => b.classList.remove('aberto'));
+    aoFechar[id]?.();
+  };
+  if (reduz) return termina();
+  janela.animate([{ transform:'none', opacity:1 }, { transform:'translateY(18px) scale(.9)', opacity:0 }],
+    { duration:200, easing:'ease-in' }).onfinish = termina;
+}
 
-function petTea(){
-  if(isBreathing) return;
-  isBreathing = true;
-  
-  purrAudio.currentTime = 0;
-  purrAudio.play().catch(e => console.log("Áudio bloqueado."));
-  
-  const img = document.querySelector('.tea-img');
-  const hint = document.getElementById('teaHint');
-  
-  img.classList.add('breathing');
-  
-  hint.textContent = "inspira fundo...";
-  hint.style.color = "var(--sage-dark)";
-  hint.style.fontWeight = "800";
-  hint.style.fontSize = "1.1rem";
+document.querySelectorAll('.app').forEach((janela) => {
+  janela.querySelector('.fechar').addEventListener('click', () => fechar(janela.dataset.app));
+  janela.querySelectorAll('[data-fecha]').forEach((b) => b.addEventListener('click', () => fechar(janela.dataset.app)));
+  janela.addEventListener('pointerdown', () => focar(janela));
+  arrastavel(janela);
+});
 
+// Esc fecha a janela da frente
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  if (!$('menu').hidden){ fechaMenu(); return; }
+  const frente = [...document.querySelectorAll('.app:not([hidden])')].sort((a, b) => b.style.zIndex - a.style.zIndex)[0];
+  if (frente) fechar(frente.dataset.app);
+});
+
+// arrastar pela barra de título, com mouse ou com o dedo.
+// pointer events cobrem os dois: o mesmo código serve pra mouse, toque e caneta.
+function arrastavel(janela){
+  const barra = janela.querySelector('.win-bar');
+  const ehApp = janela.classList.contains('app');
+
+  barra.addEventListener('pointerdown', (e) => {
+    if (e.button > 0 || e.target.closest('button')) return;   // só botão esquerdo, e nunca o x de fechar
+    if (janela.classList.contains('maximizada')) return;       // em tela cheia não arrasta
+    e.preventDefault();
+    const r = janela.getBoundingClientRect();
+    const inicioX = e.clientX, inicioY = e.clientY;
+    let tx = 0, ty = 0;
+
+    if (ehApp){
+      // no celular a janela é presa pelos 4 cantos (left/right/top/bottom).
+      // pra mover, troca isso por uma posição fixa com o tamanho atual.
+      if (!largo()) Object.assign(janela.style, { right:'auto', bottom:'auto', width:r.width + 'px', height:r.height + 'px' });
+      Object.assign(janela.style, { left:r.left + 'px', top:r.top + 'px', translate:'none' });
+    } else {
+      // a janela principal fica no fluxo da página: move com translate a partir de onde já estava
+      [tx, ty] = (janela.style.translate || '0px 0px').split(' ').map((v) => parseFloat(v) || 0);
+    }
+
+    janela.classList.add('arrastando');
+    // captura: o arrasto continua mesmo se o dedo/mouse escapar da barra. é só um extra, então fica no try.
+    try { barra.setPointerCapture(e.pointerId); } catch (err) {}
+
+    const move = (ev) => {
+      if (ev.pointerId !== e.pointerId) return;   // ignora um segundo dedo
+      // limites: a barra de título nunca sai da tela, senão não dá pra pegar de volta
+      const x = Math.min(Math.max(80 - r.width, r.left + ev.clientX - inicioX), innerWidth - 80);
+      const y = Math.min(Math.max(0, r.top + ev.clientY - inicioY), innerHeight - 54 - 46);
+      if (ehApp){
+        janela.style.left = x + 'px';
+        janela.style.top = y + 'px';
+      } else {
+        janela.style.translate = `${tx + x - r.left}px ${ty + y - r.top}px`;
+      }
+    };
+    // escuta na janela do navegador inteira: funciona com ou sem a captura
+    const solta = () => {
+      janela.classList.remove('arrastando');
+      removeEventListener('pointermove', move);
+      removeEventListener('pointerup', solta);
+      removeEventListener('pointercancel', solta);
+    };
+    addEventListener('pointermove', move);
+    addEventListener('pointerup', solta);
+    addEventListener('pointercancel', solta);
+  });
+}
+arrastavel(document.querySelector('.principal'));
+
+/* ============================================================
+   JANELA PRINCIPAL: minimizar, tela cheia e fechar
+   ============================================================ */
+const principal = $('principal');
+const ICONE_PRINCIPAL = 'Memo/3D/memo_3d.png';
+let estadoPrincipal = 'normal';          // 'normal' | 'minimizada' | 'fechada'
+let translateAntesDoZoom = '';
+
+// encolhe a janela até um elemento (o botão da barra de tarefas) e esconde
+function encolhePara(alvo, depois){
+  if (reduz || !alvo){ principal.hidden = true; depois?.(); return; }
+  const j = principal.getBoundingClientRect(), a = alvo.getBoundingClientRect();
+  const dx = (a.left + a.width / 2) - (j.left + j.width / 2);
+  const dy = (a.top + a.height / 2) - (j.top + j.height / 2);
+  principal.animate([{ transform:'none', opacity:1 }, { transform:`translate(${dx}px, ${dy}px) scale(.08)`, opacity:0 }],
+    { duration:320, easing:'cubic-bezier(.5,0,.75,0)' }).onfinish = () => { principal.hidden = true; depois?.(); };
+}
+// faz a janela "nascer" de um elemento
+function cresceDe(origem){
+  principal.hidden = false;
+  if (reduz || !origem) return;
+  const j = principal.getBoundingClientRect(), o = origem.getBoundingClientRect();
+  const dx = (o.left + o.width / 2) - (j.left + j.width / 2);
+  const dy = (o.top + o.height / 2) - (j.top + j.height / 2);
+  principal.animate([{ transform:`translate(${dx}px, ${dy}px) scale(.08)`, opacity:0 }, { transform:'none', opacity:1 }],
+    { duration:380, easing:'cubic-bezier(.2,.9,.3,1.1)' });
+}
+
+function minimizaPrincipal(){
+  if (estadoPrincipal !== 'normal') return;
+  estadoPrincipal = 'minimizada';
+  Som.minimiza();
+  atualizaTarefas();
+  // a música continua tocando: minimizar não é fechar
+  encolhePara(document.querySelector('.tarefa[data-id="principal"]'));
+}
+
+function fechaPrincipal(){
+  if (estadoPrincipal === 'fechada') return;
+  const estava = estadoPrincipal;
+  estadoPrincipal = 'fechada';
+  Som.fecha();
+  const termina = () => {
+    $('spotify').removeAttribute('src');   // tirar o src do iframe para a música
+    if (principal.classList.contains('maximizada')) alternaZoom(false);
+    principal.hidden = true;
+    atualizaTarefas();
+  };
+  if (estava === 'minimizada' || reduz) return termina();
+  principal.animate([{ transform:'none', opacity:1 }, { transform:'translateY(18px) scale(.9)', opacity:0 }],
+    { duration:200, easing:'ease-in' }).onfinish = termina;
+}
+
+function abrePrincipal(origem){
+  if (estadoPrincipal === 'normal'){ Som.clique(); return; }
+  if (estadoPrincipal === 'fechada'){
+    const s = $('spotify');
+    if (!s.getAttribute('src')) s.src = s.dataset.src;
+  }
+  estadoPrincipal = 'normal';
+  Som.abre();
+  atualizaTarefas();
+  cresceDe(origem);
+}
+
+// tela cheia. técnica FLIP: mede antes, muda o layout, mede depois e anima a diferença
+function alternaZoom(anima = true){
+  const antes = principal.getBoundingClientRect();
+  const vaiMaximizar = !principal.classList.contains('maximizada');
+  if (vaiMaximizar){
+    translateAntesDoZoom = principal.style.translate;
+    principal.style.translate = '';
+  } else {
+    principal.style.translate = translateAntesDoZoom;
+  }
+  principal.classList.toggle('maximizada', vaiMaximizar);
+  $('pZoom').setAttribute('aria-pressed', String(vaiMaximizar));
+  $('pZoom').setAttribute('aria-label', vaiMaximizar ? 'sair da tela cheia' : 'tela cheia');
+  $('pZoom').title = $('pZoom').getAttribute('aria-label');
+  if (!anima || reduz) return;
+  Som.menu();
+  const depois = principal.getBoundingClientRect();
+  principal.animate([
+    { transformOrigin:'top left', transform:`translate(${antes.left - depois.left}px, ${antes.top - depois.top}px) scale(${antes.width / depois.width}, ${antes.height / depois.height})` },
+    { transformOrigin:'top left', transform:'none' }
+  ], { duration:300, easing:'cubic-bezier(.2,.8,.25,1)' });
+}
+
+$('pMin').dataset.semClique = '';
+$('pZoom').dataset.semClique = '';
+$('pFechar').dataset.semClique = '';
+$('pMin').addEventListener('click', minimizaPrincipal);
+$('pZoom').addEventListener('click', () => alternaZoom());
+$('pFechar').addEventListener('click', fechaPrincipal);
+// dois cliques na barra de título também dão zoom, como no Windows
+principal.querySelector('.win-bar').addEventListener('dblclick', (e) => { if (!e.target.closest('button')) alternaZoom(); });
+atualizaTarefas();   // já começa com o botão da janela principal na barra
+
+function atualizaTarefas(){
+  const t = $('tarefas');
+  t.innerHTML = '';
+  // janela principal: aparece na barra se estiver aberta ou minimizada.
+  // clicar minimiza se ela estiver visível, e restaura se estiver minimizada (igual ao Windows).
+  if (estadoPrincipal !== 'fechada'){
+    const b = document.createElement('button');
+    b.className = 'tarefa' + (estadoPrincipal === 'minimizada' ? ' minimizada' : '');
+    b.dataset.id = 'principal';
+    b.dataset.semClique = '';
+    b.innerHTML = `<img src="${ICONES + ICONE_PRINCIPAL}" alt=""><span>bem_vinda.txt</span>`;
+    b.setAttribute('aria-label', estadoPrincipal === 'minimizada' ? 'restaurar bem_vinda.txt' : 'minimizar bem_vinda.txt');
+    b.addEventListener('click', () => estadoPrincipal === 'minimizada' ? abrePrincipal(b) : minimizaPrincipal());
+    t.append(b);
+  }
+  APPS.filter((a) => abertas.has(a.id)).forEach((a) => {
+    const b = document.createElement('button');
+    b.className = 'tarefa';
+    b.dataset.id = a.id;
+    b.innerHTML = `<img src="${ICONES + a.icone}" alt=""><span>${a.nome}</span>`;
+    b.setAttribute('aria-label', 'ir para ' + a.nome);
+    b.addEventListener('click', () => focar($('app-' + a.id)));
+    t.append(b);
+  });
+  const frente = document.querySelector('.app.focada');
+  if (frente) document.querySelectorAll('.tarefa').forEach((x) => x.classList.toggle('focada', x.dataset.id === frente.dataset.app));
+}
+
+/* ============================================================
+   MENU INICIAR
+   ============================================================ */
+function abreMenu(){
+  $('menu').hidden = false;
+  $('menu').classList.remove('abrindo'); void $('menu').offsetWidth; $('menu').classList.add('abrindo');
+  $('menu').style.zIndex = 300;
+  $('iniciar').setAttribute('aria-expanded', 'true');
+  Som.menu();
+  $('menu').querySelector('button').focus();
+}
+function fechaMenu(devolveFoco = true){
+  if ($('menu').hidden) return;
+  $('menu').hidden = true;
+  $('iniciar').setAttribute('aria-expanded', 'false');
+  if (devolveFoco) $('iniciar').focus();
+}
+$('iniciar').addEventListener('click', () => { Som.iniciar(); $('menu').hidden ? abreMenu() : fechaMenu(); });
+document.addEventListener('pointerdown', (e) => {
+  if (!$('menu').hidden && !e.target.closest('#menu, #iniciar')) fechaMenu(false);
+});
+
+/* ============================================================
+   RELÓGIO
+   ============================================================ */
+function falta(){ return FORCAR_ABERTO ? 0 : Math.max(0, FIM - Date.now()); }
+const dd = (n) => String(n).padStart(2, '0');
+let estavaAberto = null;
+
+function atualizaRelogio(){
+  const ms = falta();
+  const s = Math.floor(ms / 1000);
+  const d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60), seg = s % 60;
+  if (ms > 0){
+    $('trayTexto').textContent = d > 0 ? `${d}d ${dd(h)}h` : `${dd(h)}:${dd(m)}`;
+    $('rD').textContent = d; $('rH').textContent = dd(h); $('rM').textContent = dd(m); $('rS').textContent = dd(seg);
+  }
+  const aberto = ms === 0;
+  if (aberto !== estavaAberto){
+    estavaAberto = aberto;
+    if (aberto){
+      $('trayIcone').src = ICONES + 'Party%20popper/3D/party_popper_3d.png';
+      $('trayTexto').textContent = 'zerou';
+      $('relogioFrase').textContent = 'zerou. você conseguiu.';
+      $('relogioNum').hidden = true;
+      $('relogioNota').textContent = 'as cartinhas do correio já abriram.';
+      $('correioNota').textContent = 'pode abrir';
+    }
+    desenhaCartas(aberto);
+  }
+}
+$('tray').addEventListener('click', () => abrir('relogio', { origem:$('tray') }));
+
+/* ============================================================
+   CORREIO
+   ============================================================ */
+function desenhaCartas(aberto){
+  const ul = $('cartas');
+  ul.innerHTML = '';
+  CARTAS.forEach((c) => {
+    const li = document.createElement('li');
+    const b = document.createElement('button');
+    b.className = 'carta-btn ' + (aberto ? 'aberta' : 'trancada');
+    b.dataset.semClique = '';
+    b.innerHTML = `<span class="env"><img src="${ICONES}Love%20letter/3D/love_letter_3d.png" alt=""><img class="cadeado" src="${ICONES}Locked/3D/locked_3d.png" alt=""></span>`;
+    b.append(c.titulo);
+    b.addEventListener('click', () => {
+      if (falta() > 0){
+        const s = Math.floor(falta() / 1000);
+        $('avisoFalta').textContent = `faltam ${Math.floor(s/86400)} dias e ${Math.floor(s%86400/3600)} horas.`;
+        mostraOuAbre('trancada', b, 'erro');
+        return;
+      }
+      $('cartaTitulo').textContent = c.titulo;
+      $('cartaTexto').textContent = c.texto;
+      mostraOuAbre('carta', b, 'ding');
+    });
+    li.append(b);
+    ul.append(li);
+  });
+}
+// se a janela já está aberta, só traz pra frente com o som; senão abre
+function mostraOuAbre(id, origem, som){
+  const j = $('app-' + id);
+  if (j.hidden) abrir(id, { origem, som });
+  else { focar(j); Som[som](); }
+}
+
+atualizaRelogio();
+setInterval(atualizaRelogio, 1000);
+
+/* ============================================================
+   VITROLA
+   ============================================================ */
+let player = null, playerPronto = false, videoPendente = null, discoAtual = null;
+
+window.onYouTubeIframeAPIReady = () => {
+  player = new YT.Player('yt', {
+    width:'100%', height:'100%',
+    playerVars:{ playsinline:1, rel:0 },
+    events:{
+      onReady:() => { playerPronto = true; if (videoPendente){ player.loadVideoById(videoPendente); videoPendente = null; } },
+      onStateChange:(e) => {
+        if (e.data === YT.PlayerState.PLAYING) $('vinil').classList.add('gira');
+        if (e.data === YT.PlayerState.PAUSED) $('vinil').classList.remove('gira');
+        if (e.data === YT.PlayerState.ENDED) tiraDisco();
+      }
+    }
+  });
+};
+const tagYT = document.createElement('script');
+tagYT.src = 'https://www.youtube.com/iframe_api';
+document.head.append(tagYT);
+
+DISCOS.forEach((d) => {
+  const li = document.createElement('li');
+  li.innerHTML = `<button class="capa" data-sem-clique aria-pressed="false" data-id="${d.id}">
+      <img src="${d.capa}" alt="capa do álbum ${d.album}" loading="lazy">
+      <span><b>${d.album}</b><small>${d.musica}</small></span>
+    </button>`;
+  li.querySelector('button').addEventListener('click', () => escolheDisco(d));
+  $('capas').append(li);
+});
+
+function marcaCapa(id){
+  document.querySelectorAll('.capa').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.id === id)));
+}
+
+function escolheDisco(d){
+  if (discoAtual === d.id){ tiraDisco(); return; }
+
+  // a música começa já no toque: no celular o navegador só libera som logo depois de um toque
+  $('playerBox').classList.add('ativo');
+  if (playerPronto) player.loadVideoById(d.yt); else videoPendente = d.yt;
+
+  marcaCapa(d.id);
+  $('estado').textContent = 'tocando agora';
+  $('faixa').textContent = d.musica;
+  $('albumNome').textContent = d.album;
+  $('tirarDisco').disabled = false;
+
+  // no celular a estante fica embaixo da vitrola: rola até ela pra animação não passar batido
+  let espera = 0;
+  const deck = document.querySelector('.deck');
+  const corpo = deck.closest('.win-body');
+  const rd = deck.getBoundingClientRect(), rc = corpo.getBoundingClientRect();
+  if (rd.top < rc.top || rd.bottom > rc.bottom){
+    corpo.scrollTo({ top:0, behavior: reduz ? 'auto' : 'smooth' });
+    espera = reduz ? 0 : 400;
+  }
+  if (discoAtual){
+    $('disco').classList.remove('on');
+    $('vinil').classList.remove('gira');
+    espera = Math.max(espera, reduz ? 0 : 450);
+  }
+  discoAtual = d.id;
   setTimeout(() => {
-    hint.textContent = "expira devagar...";
-  }, 4000);
-  
-  setTimeout(() => {
-    hint.textContent = "prontinho. tome seu chá e relaxe. (clique se quiser repetir)";
-    hint.style.color = "#8a8175";
-    hint.style.fontWeight = "normal";
-    hint.style.fontSize = "0.85rem";
-    img.classList.remove('breathing');
-    isBreathing = false;
-  }, 8000);
+    $('rotulo').src = d.capa;
+    $('disco').classList.add('on');
+    setTimeout(() => Som.disco(), reduz ? 0 : 850);
+  }, espera);
 }
 
-const quotes = [
-  "o Pequeno Príncipe dizia que a gente só enxerga direito com o coração. talvez por isso as pessoas que mais gostam de você nem sempre precisem dizer isso em voz alta.",
-  "tem um livro que fala que a gente aceita o amor que acha que merece. espero que você vá aceitando cada vez mais, porque merece bastante.",
-  "as melhores histórias não são sobre gente que nunca cai, são sobre gente que insiste em virar mais uma página depois de cair.",
-  "ler é meio que colecionar vidas que a gente nunca vai viver, e ainda assim sair mais forte pra viver a sua própria.",
-  "coragem não é a ausência do medo. às vezes, coragem é só uma voz baixinha no fim do dia dizendo: 'amanhã eu tento de novo'.",
-  "você não é um peso pra quem escolheu caminhar do seu lado. quem te ama, ama carregar sua bagagem junto quando ela fica pesada.",
-  "nem todo dia precisa ser produtivo pra ser um dia que valeu a pena. às vezes, existir e respirar fundo já dá bastante trabalho.",
-  "o mar sempre volta a ficar calmo depois da tempestade. a gente também, no nosso próprio tempo.",
-  "a grama do vizinho pode até parecer mais verde, mas é na sua que você pode deitar e descansar.",
-  "comi o cu de quem leu",
-  "ficar vulnerável não te deixa fraco, te deixa humano. e ser humano é a coisa mais bonita que você pode ser hoje."
-];
-let qi = 0;
-function nextQuote(){
-  qi = (qi+1) % quotes.length;
-  const el = document.getElementById('quoteText');
-  el.style.opacity = 0;
-  setTimeout(()=>{ el.textContent = quotes[qi]; el.style.opacity = 1; }, 200);
+function tiraDisco(){
+  if (player && playerPronto) player.stopVideo();
+  $('disco').classList.remove('on');
+  $('vinil').classList.remove('gira');
+  $('playerBox').classList.remove('ativo');
+  $('estado').textContent = 'nada tocando';
+  $('faixa').textContent = 'escolhe um disco';
+  $('albumNome').textContent = '';
+  $('tirarDisco').disabled = true;
+  marcaCapa(null);
+  discoAtual = null;
 }
+$('tirarDisco').addEventListener('click', tiraDisco);
 
-function giveHug(){
-  const container = document.getElementById('hugContainer');
-  container.innerHTML = `
-    <div style="background:var(--cream); padding:16px; border-radius:12px; box-shadow:var(--shadow); display:inline-block;">
-      <img src="https://media.giphy.com/media/l3q2up9FZPFncIt1e/giphy.gif" alt="Cat Hug" style="width:100%; max-width:350px; border-radius:8px;">
-      <p style="margin-top:12px; font-style:italic; color:var(--ink);">um abraço apertado, sem pressa nenhuma pra soltar.</p>
-    </div>
-  `;
+/* ============================================================
+   O QUE ACONTECE AO ABRIR E FECHAR CADA JANELA
+   ============================================================ */
+const aoAbrir = {
+  // o vídeo dos gatos só carrega quando a janela abre (deixa o site mais leve)
+  // getAttribute, e não v.src: a propriedade devolve a URL resolvida, e "" vira o endereço da própria página
+  gatos(){ const v = $('videoGatos'); if (!v.getAttribute('src')) v.src = v.dataset.src; },
+};
+const aoFechar = {
+  vitrola(){ if (discoAtual) tiraDisco(); },
+  // fechar a janela para o vídeo
+  gatos(){ $('videoGatos').removeAttribute('src'); $('chuva').innerHTML = ''; },
+};
+
+/* ============================================================
+   GATOS DEMAIS
+   ============================================================ */
+const TIPOS_GATO = ['Cat/3D/cat_3d.png', 'Black%20cat/3D/black_cat_3d.png', 'Grinning%20cat/3D/grinning_cat_3d.png',
+  'Smiling%20cat%20with%20heart-eyes/3D/smiling_cat_with_heart-eyes_3d.png', 'Cat%20face/3D/cat_face_3d.png'];
+
+$('maisGatos').addEventListener('click', () => {
+  const chuva = $('chuva');
+  chuva.innerHTML = '';
+  for (let i = 0; i < 26; i++){
+    const g = document.createElement('img');
+    g.src = ICONES + TIPOS_GATO[i % TIPOS_GATO.length];
+    g.alt = '';
+    g.style.left = (Math.random() * 86) + '%';
+    g.style.top = (Math.random() * 80) + '%';
+    g.style.setProperty('--r', (Math.random() * 50 - 25) + 'deg');
+    g.style.animationDelay = (i * 45) + 'ms';
+    chuva.append(g);
+    setTimeout(() => Som.nota(500 + Math.random() * 900, 0, .07, 'sine', .04), i * 45);
+  }
+  setTimeout(() => abrir('erro', { som:'erro' }), 26 * 45 + 250);
+});
+
+// janela de erro criada aqui pra ficar junto da lógica dos gatos
+const erro = document.createElement('section');
+erro.className = 'win app mini bar-pink';
+erro.id = 'app-erro';
+erro.dataset.app = 'erro';
+erro.style.setProperty('--w', '340px');
+erro.hidden = true;
+erro.tabIndex = -1;
+erro.setAttribute('role', 'alertdialog');
+erro.setAttribute('aria-label', 'erro');
+erro.innerHTML = `<div class="win-bar"><span class="titulo">erro</span><button class="fechar" aria-label="fechar">x</button></div>
+  <div class="win-body" style="text-align:center; justify-items:center;">
+    <p style="font-family:var(--pixel); font-size:15px;">gatos demais. o sistema não aguenta tanta fofura.</p>
+    <button class="btn" data-fecha>ok</button>
+  </div>`;
+document.body.append(erro);
+erro.querySelector('.fechar').addEventListener('click', () => fechar('erro'));
+erro.querySelector('[data-fecha]').addEventListener('click', () => fechar('erro'));
+erro.addEventListener('pointerdown', () => focar(erro));
+arrastavel(erro);
+aoFechar.erro = () => { $('chuva').innerHTML = ''; };
+
+/* ============================================================
+   FRASES
+   ============================================================ */
+let fi = 0;
+function mostraFrase(){
+  $('frase').textContent = FRASES[fi].t;
+  $('autor').textContent = FRASES[fi].a;
+  $('contador').textContent = `${fi + 1} de ${FRASES.length}`;
 }
+$('virar').dataset.semClique = '';
+$('virar').addEventListener('click', () => {
+  fi = (fi + 1) % FRASES.length;
+  Som.vira();
+  const p = $('pagina');
+  p.classList.remove('vira'); void p.offsetWidth; p.classList.add('vira');
+  setTimeout(mostraFrase, reduz ? 0 : 160);
+});
+mostraFrase();
+
+try { $('verso').value = localStorage.getItem('cantinho-rascunho') || ''; } catch (e) {}
+$('verso').addEventListener('input', (e) => {
+  try { localStorage.setItem('cantinho-rascunho', e.target.value); } catch (err) {}
+});
+
+/* ============================================================
+   ABRAÇO
+   ============================================================ */
+$('btnAbraco').dataset.semClique = '';
+$('btnAbraco').addEventListener('click', () => {
+  Som.ding();
+  $('gifAbraco').innerHTML = '<img src="https://media.giphy.com/media/Gf54zTxt2QKru/giphy.gif" alt="dois gatinhos dormindo abraçados">';
+});
 </script>
 </body>
 </html>
