@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>um cantinho só seu</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&family=Caveat:wght@500;700&display=swap');
+
+:root{
+  --cream:#F7F2E9;
+  --paper:#FBF8F2;
+  --ink:#2E2822;
+  --sage:#8A9A7E;
+  --sage-dark:#63735A;
+  --plum:#8B5A6B;
+  --gold:#C9A15A;
+  --shadow: 0 8px 24px rgba(46,40,34,0.10);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'Nunito', sans-serif;
+  line-height:1.55;
+  overflow-x:hidden;
+}
+
+.wrap{max-width:760px; margin:0 auto; padding:0 20px; visibility:hidden;}
+.wrap.show{visibility:visible;}
+
+/* ---------- GATE ---------- */
+#gate{
+  position:fixed; inset:0; z-index:50;
+  background:var(--cream);
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column; text-align:center; padding:30px;
+  cursor:pointer;
+}
+#gate .gate-cat{font-size:3.2rem; margin-bottom:6px;}
+#gate h1{font-size:1.6rem; margin:0 0 8px; font-weight:800;}
+#gate p{color:#6b6156; max-width:280px; margin:0;}
+#gate.hide{display:none;}
+
+/* ---------- HERO ---------- */
+.hero{padding:44px 20px 10px; text-align:center;}
+.hero h1{font-size:clamp(2rem, 7vw, 2.7rem); font-weight:800; margin:0 0 12px;}
+.hero p{max-width:480px; margin:0 auto; color:#5b5148; font-size:1.05rem;}
+
+.player-box{
+  max-width:420px; margin:24px auto 0;
+  border-radius:16px; overflow:hidden; box-shadow:var(--shadow);
+}
+.player-caption{font-size:0.85rem; color:#8a8175; margin-top:8px;}
+
+/* ---------- TEA IMAGE SCENE ---------- */
+.tea-scene {
+  margin: 10px auto;
+  text-align: center;
+  position: relative;
+  display: inline-block;
+}
+.tea-img {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  background: white;
+  padding: 24px;
+  border-radius: 50%;
+  border: 6px solid var(--paper);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.tea-img:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(46,40,34,0.15);
+}
+.tea-img:active {
+  transform: scale(0.95);
+}
+
+.breathing {
+  animation: breatheAnim 8s ease-in-out forwards;
+  pointer-events: none;
+}
+@keyframes breatheAnim {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.2); box-shadow: 0 20px 40px rgba(138, 154, 126, 0.4); }
+  100% { transform: scale(1); }
+}
+
+.hint{font-size:0.85rem; color:#8a8175; margin-top:16px; font-style:italic; transition: all 0.3s ease;}
+
+/* ---------- DECORATIONS ---------- */
+.paw-trail{text-align:center; font-size:1.1rem; letter-spacing:14px; opacity:0.5; margin:6px 0 -6px; user-select:none;}
+.corner-cat{position:absolute; width:28px; height:22px; opacity:0.55;}
+.corner-cat .ce{position:absolute; width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-bottom:9px solid var(--plum);}
+.corner-cat .ce.l{left:0; top:0; transform:rotate(-15deg);}
+.corner-cat .ce.r{left:12px; top:0; transform:rotate(15deg);}
+.corner-cat .cf{position:absolute; top:6px; left:2px; width:20px; height:16px; background:var(--plum); border-radius:50%;}
+.corner-cat.tr{top:-10px; right:16px;}
+.corner-cat.tl{top:-10px; left:16px;}
+
+/* ---------- SECTIONS ---------- */
+section{margin:26px auto; padding:30px 24px; background:var(--paper); border-radius:20px; box-shadow:var(--shadow); position:relative;}
+section h2{font-size:1.3rem; font-weight:800; margin:0 0 10px; color:var(--plum);}
+section p.lead{color:#5b5148; margin-bottom:18px;}
+
+.action-btn{border:none; background:var(--sage); color:white; font-family:'Nunito',sans-serif; font-weight:700; padding:12px 22px; border-radius:30px; cursor:pointer; font-size:0.95rem; transition:transform .15s ease, background .2s ease; width: 100%; max-width: 250px;}
+.action-btn:hover{background:var(--sage-dark); transform:translateY(-2px);}
+
+/* Music Shelf */
+.shelf{display:flex; flex-direction:column; gap:14px;}
+.album-card{background:var(--cream); border-radius:14px; padding:16px; box-shadow:0 4px 10px rgba(0,0,0,0.06); transition:transform 0.2s ease, box-shadow 0.2s ease;}
+.album{cursor:pointer; display:flex; align-items:center; justify-content:space-between;}
+.album-card:hover{transform:translateY(-3px); box-shadow:0 6px 14px rgba(0,0,0,0.1);}
+.album-head{display:flex; align-items:center; gap:16px;}
+.album .disc{width:46px; height:46px; border-radius:50%; background:conic-gradient(var(--plum), var(--gold), var(--sage), var(--plum)); position:relative; flex-shrink:0; border:2px solid var(--ink);}
+.album .disc::after{content:""; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:12px; height:12px; background:var(--cream); border:2px solid var(--ink); border-radius:50%;}
+.album span{font-weight:800; font-size:1.05rem; display:block;}
+.album small{color:#8a8175; display:block; font-weight:400;}
+.play-icon{font-size:1.2rem; color:var(--plum); opacity:0.5;}
+.album-card:hover .play-icon{opacity:1;}
+@keyframes spin { 100% { transform:rotate(360deg); } }
+.disc.playing { animation: spin 2s linear infinite; }
+.track-player { margin-top: 12px; display: none; }
+.track-player.active { display: block; }
+
+/* Bookmark */
+.bookmark{display:flex; gap:16px; align-items:flex-start;}
+.bookmark .ribbon{width:26px; min-height:70px; background:var(--plum); clip-path:polygon(0 0,100% 0,100% 85%,50% 100%,0 85%); flex-shrink:0;}
+#quoteText{font-style:italic; color:var(--ink); font-size:1.05rem;}
+
+footer{text-align:center; padding:44px 20px 60px; color:#8a8175;}
+footer .sign{font-family:'Caveat', cursive; font-size:1.8rem; color:var(--plum); display:block; margin-top:6px;}
+
+@media (max-width:480px){
+  .bookmark{flex-direction:column; align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<div id="gate" onclick="enterSite()">
+  <div class="gate-cat">🐈‍⬛🍵</div>
+  <h1>toque pra entrar</h1>
+  <p>tem um cantinho fofo esperando por você, com uma musiquinha de Life is Strange tocando junto</p>
+</div>
+
+<div class="hero">
+  <h1>um cantinho só seu</h1>
+  <p>fiz isso pra você ter um lugar bobo e fofo pra passar uns minutos. sem pressa nenhuma, só rola a página no seu tempo.</p>
+  <div class="player-box">
+    <!-- O src do Spotify agora é definido diretamente no HTML para não quebrar os eventos internos do widget -->
+    <iframe id="lisPlayer" src="https://open.spotify.com/embed/track/2ynCjjrmED5CfiVn2ZLkUk?utm_source=generator" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+  <p class="player-caption">"Obstacles", de Syd Matters, aquela do menu de Life is Strange</p>
+</div>
+
+<div class="wrap" id="wrap">
+
+  <!-- SEÇÃO DO CHÁ -->
+  <div class="paw-trail">🐾 🐾 🐾</div>
+  <section style="text-align:center;">
+    <div class="corner-cat tr"><div class="ce l"></div><div class="ce r"></div><div class="cf"></div></div>
+    <h2>pausa pro chá</h2>
+    <p class="lead">um lembrete pra tomar um chá quentinho e respirar fundo.</p>
+    
+    <div class="tea-scene">
+      <img src="https://cdn-icons-png.flaticon.com/512/1601/1601057.png" alt="Xícara de chá" class="tea-img" onclick="petTea()">
+      <div id="teaHint" class="hint">clique na xícara para respirarmos juntos</div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO DOS GATOS -->
+  <div class="paw-trail">🐾 🐾 🐾</div>
+  <section>
+    <div class="corner-cat tl"><div class="ce l"></div><div class="ce r"></div><div class="cf"></div></div>
+    <h2>gatinhos bobos</h2>
+    <p class="lead">pra distrair a cabeça. não precisa ver tudo, só o suficiente pra dar um sorrisinho.</p>
+    <div style="border-radius:12px; overflow:hidden; box-shadow:var(--shadow);">
+      <!-- ID atualizado para um vídeo sem restrição de incorporação -->
+      <iframe width="100%" height="280" src="https://www.youtube.com/embed/UF5MLCkyGzs" title="Cats being silly" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <!-- SEÇÃO ONE DIRECTION -->
+  <div class="paw-trail">🐾 🐾 🐾</div>
+  <section>
+    <div class="corner-cat tr"><div class="ce l"></div><div class="ce r"></div><div class="cf"></div></div>
+    <h2>a estante de 1D</h2>
+    <p class="lead">clica em um disco pra ele abrir e tocar a música direitinho.</p>
+    
+    <div class="shelf">
+      <!-- IDs atualizados com lyric videos extraídos da API do YouTube -->
+      <div class="album-card" id="card-upallnight">
+        <div class="album" onclick="toggle1D('upallnight', 'mfavkCY52MI')">
+          <div class="album-head"><div class="disc" id="disc-upallnight"></div><div><span>Up All Night</span><small> (What Makes You Beautiful)</small></div></div>
+          <div class="play-icon">▶</div>
+        </div>
+        <div class="track-player" id="player-upallnight"></div>
+      </div>
+
+      <div class="album-card" id="card-takemehome">
+        <div class="album" onclick="toggle1D('takemehome', 'jGTafzFRGU0')">
+          <div class="album-head"><div class="disc" id="disc-takemehome"></div><div><span>Take Me Home</span><small>(Kiss You)</small></div></div>
+          <div class="play-icon">▶</div>
+        </div>
+        <div class="track-player" id="player-takemehome"></div>
+      </div>
+
+      <div class="album-card" id="card-midnight">
+        <div class="album" onclick="toggle1D('midnight', 'B6dZCMzCs5s')">
+          <div class="album-head"><div class="disc" id="disc-midnight"></div><div><span>Midnight Memories</span><small>(Story of My Life)</small></div></div>
+          <div class="play-icon">▶</div>
+        </div>
+        <div class="track-player" id="player-midnight"></div>
+      </div>
+
+      <div class="album-card" id="card-four">
+        <div class="album" onclick="toggle1D('four', 'I3IcQsfC7jA')">
+          <div class="album-head"><div class="disc" id="disc-four"></div><div><span>Four</span><small>(Night Changes)</small></div></div>
+          <div class="play-icon">▶</div>
+        </div>
+        <div class="track-player" id="player-four"></div>
+      </div>
+
+      <div class="album-card" id="card-madeintheam">
+        <div class="album" onclick="toggle1D('madeintheam', 'r7cLPlyoegI')">
+          <div class="album-head"><div class="disc" id="disc-madeintheam"></div><div><span>Made in the A.M.</span><small>(History)</small></div></div>
+          <div class="play-icon">▶</div>
+        </div>
+        <div class="track-player" id="player-madeintheam"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO LETRAS -->
+  <div class="paw-trail">🐾 🐾 🐾</div>
+  <section>
+    <div class="corner-cat tl"><div class="ce l"></div><div class="ce r"></div><div class="cf"></div></div>
+    <h2>pausa pra letras(ou frases)</h2>
+    <div class="bookmark">
+      <div class="ribbon"></div>
+      <div>
+        <p id="quoteText">o Pequeno Príncipe dizia que a gente só enxerga direito com o coração. talvez por isso as pessoas que mais gostam de você nem sempre precisem dizer isso em voz alta.</p>
+        <button class="action-btn" style="margin-top:12px; background:var(--plum); width: auto;" onclick="nextQuote()">virar a página</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO ABRAÇO -->
+  <section style="text-align:center;">
+    <div class="corner-cat tr"><div class="ce l"></div><div class="ce r"></div><div class="cf"></div></div>
+    <h2>preciso de um abraço</h2>
+    <p class="lead">pode pedir sem vergonha nenhuma. clica aí.</p>
+    <div style="display:flex; justify-content:center;">
+      <button class="action-btn" onclick="giveHug()">me dá um abraço</button>
+    </div>
+    <div id="hugContainer" style="margin-top:16px;"></div>
+  </section>
+
+</div>
+
+<footer>
+  esse cantinho é só um pedacinho de tudo que eu sei que vc gosta.
+  <span class="sign">Nem todo mundo tem um primo lindo e nerd</span>
+</footer>
+
+<script>
+// A função agora apenas controla a visibilidade da página. O iframe do Spotify cuida de si mesmo.
+function enterSite(){
+  document.getElementById('gate').classList.add('hide');
+  document.getElementById('wrap').classList.add('show');
+}
+
+let activeTrackKey = null;
+
+function toggle1D(trackKey, videoId) {
+  const playerContainer = document.getElementById('player-' + trackKey);
+  const discElement = document.getElementById('disc-' + trackKey);
+  
+  if (activeTrackKey === trackKey) {
+    playerContainer.innerHTML = '';
+    playerContainer.classList.remove('active');
+    discElement.classList.remove('playing');
+    activeTrackKey = null;
+    return;
+  }
+
+  if (activeTrackKey) {
+    const prevContainer = document.getElementById('player-' + activeTrackKey);
+    const prevDisc = document.getElementById('disc-' + activeTrackKey);
+    if (prevContainer) {
+      prevContainer.innerHTML = '';
+      prevContainer.classList.remove('active');
+    }
+    if (prevDisc) prevDisc.classList.remove('playing');
+  }
+
+  playerContainer.innerHTML = `<iframe width="100%" height="80" src="https://www.youtube.com/embed/${videoId}?autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;"></iframe>`;
+  playerContainer.classList.add('active');
+  discElement.classList.add('playing');
+  activeTrackKey = trackKey;
+}
+
+const purrAudio = new Audio('https://upload.wikimedia.org/wikipedia/commons/4/4b/Purr.ogg');
+purrAudio.volume = 0.6;
+let isBreathing = false;
+
+function petTea(){
+  if(isBreathing) return;
+  isBreathing = true;
+  
+  purrAudio.currentTime = 0;
+  purrAudio.play().catch(e => console.log("Áudio bloqueado."));
+  
+  const img = document.querySelector('.tea-img');
+  const hint = document.getElementById('teaHint');
+  
+  img.classList.add('breathing');
+  
+  hint.textContent = "inspira fundo...";
+  hint.style.color = "var(--sage-dark)";
+  hint.style.fontWeight = "800";
+  hint.style.fontSize = "1.1rem";
+
+  setTimeout(() => {
+    hint.textContent = "expira devagar...";
+  }, 4000);
+  
+  setTimeout(() => {
+    hint.textContent = "prontinho. tome seu chá e relaxe. (clique se quiser repetir)";
+    hint.style.color = "#8a8175";
+    hint.style.fontWeight = "normal";
+    hint.style.fontSize = "0.85rem";
+    img.classList.remove('breathing');
+    isBreathing = false;
+  }, 8000);
+}
+
+const quotes = [
+  "o Pequeno Príncipe dizia que a gente só enxerga direito com o coração. talvez por isso as pessoas que mais gostam de você nem sempre precisem dizer isso em voz alta.",
+  "tem um livro que fala que a gente aceita o amor que acha que merece. espero que você vá aceitando cada vez mais, porque merece bastante.",
+  "as melhores histórias não são sobre gente que nunca cai, são sobre gente que insiste em virar mais uma página depois de cair.",
+  "ler é meio que colecionar vidas que a gente nunca vai viver, e ainda assim sair mais forte pra viver a sua própria.",
+  "coragem não é a ausência do medo. às vezes, coragem é só uma voz baixinha no fim do dia dizendo: 'amanhã eu tento de novo'.",
+  "você não é um peso pra quem escolheu caminhar do seu lado. quem te ama, ama carregar sua bagagem junto quando ela fica pesada.",
+  "nem todo dia precisa ser produtivo pra ser um dia que valeu a pena. às vezes, existir e respirar fundo já dá bastante trabalho.",
+  "o mar sempre volta a ficar calmo depois da tempestade. a gente também, no nosso próprio tempo.",
+  "a grama do vizinho pode até parecer mais verde, mas é na sua que você pode deitar e descansar.",
+  "comi o cu de quem leu",
+  "ficar vulnerável não te deixa fraco, te deixa humano. e ser humano é a coisa mais bonita que você pode ser hoje."
+];
+let qi = 0;
+function nextQuote(){
+  qi = (qi+1) % quotes.length;
+  const el = document.getElementById('quoteText');
+  el.style.opacity = 0;
+  setTimeout(()=>{ el.textContent = quotes[qi]; el.style.opacity = 1; }, 200);
+}
+
+function giveHug(){
+  const container = document.getElementById('hugContainer');
+  container.innerHTML = `
+    <div style="background:var(--cream); padding:16px; border-radius:12px; box-shadow:var(--shadow); display:inline-block;">
+      <img src="https://media.giphy.com/media/l3q2up9FZPFncIt1e/giphy.gif" alt="Cat Hug" style="width:100%; max-width:350px; border-radius:8px;">
+      <p style="margin-top:12px; font-style:italic; color:var(--ink);">um abraço apertado, sem pressa nenhuma pra soltar.</p>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>
